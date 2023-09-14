@@ -2,10 +2,10 @@
 
 This project uses C++ and the Simple and Fast Media Library SFML for graphics. To minimize the barriers to entry for those of you that would like to join the project, this project is based on the SFML GitHub template: https://github.com/SFML/cmake-sfml-project
 
-The template starts out very basic, but might receive additional features over time:
+The template included:
 
-- Basic CMake script to build your project and link SFML on any operating system
-- Basic [GitHub Actions](https://github.com/features/actions) script for all major platforms
+- Basic CMake script to build your project and link SFML on any operating system. If you don't know what that is, it should be okay. If you run into issues, though, reach out!
+- Basic [GitHub Actions](https://github.com/features/actions) script for all major platforms. (Not important for us).
 
 ## How to Use
 (changed slightly from template readme)
