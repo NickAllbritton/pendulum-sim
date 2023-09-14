@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "Menu.h"
 
 #ifndef SIMULATION_H
 #define SIMULATION_H
@@ -21,6 +22,7 @@ public:
     float height;
 private:
     sf::RenderWindow& wnd; // the simulation object owns a reference to the window handle
+    Menu menu;
 };
 
 #endif
