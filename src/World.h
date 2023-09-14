@@ -1,6 +1,7 @@
 #include <cmath>
 #include <random>
 #include <SFML/Graphics.hpp>
+#include <boost/numeric/odeint.hpp> // for ODE solvers
 
 #ifndef WORLD_H
 #define WORLD_H
