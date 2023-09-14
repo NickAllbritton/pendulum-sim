@@ -1,23 +1,20 @@
-#include <SFML/Graphics.hpp>
+#include "Simulation.h"
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 1920u, 1080u }, "CMake SFML Project" };
-    window.setFramerateLimit(144);
+    // create the window object with the end-user's first available full screen mode
+    // note: the title "PendulumSim" will not be displayed in full screen mode. 
+    auto wnd = sf::RenderWindow{ sf::VideoMode::getFullscreenModes().at(0), "PendulumSim", sf::Style::Fullscreen };
 
-    while (window.isOpen())
-    {
-        for (auto event = sf::Event{}; window.pollEvent(event);)
-        {
-            switch(event.type)
-            {
-                case sf::Event::KeyPressed:
-                    if(event.key.code == sf::Keyboard::Q) window.close(); // press q to close the window
-                break;
-            }
-        }
+    // the following line was in the example code to set the framerate limit
+    // wnd.setFramerateLimit(144);
+    // TODO: We should discuss how to manage our time efficiently. C++ can be a fast language, but the problem remains:
+    // We need to 1) Calculate the position of our bob and 2) Draw it. 
+    // The more complex our code becomes the more time management matters
 
-        window.clear();
-        window.display();
-    }
+    Simulation sim(wnd);
+
+    while (wnd.isOpen()) sim.run(); // every frame that the window is open, run the sim
+
+    return 0;
 }
