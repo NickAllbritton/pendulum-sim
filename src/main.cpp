@@ -9,9 +9,11 @@ int main()
     {
         for (auto event = sf::Event{}; window.pollEvent(event);)
         {
-            if (event.type == sf::Event::Closed)
+            switch(event.type)
             {
-                window.close();
+                case sf::Event::KeyPressed:
+                    if(event.key.code == sf::Keyboard::Q) window.close(); // press q to close the window
+                break;
             }
         }
 
