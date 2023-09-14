@@ -3,7 +3,7 @@
 Simulation::Simulation(sf::RenderWindow &window)
     : wnd(window), 
     width(window.getSize().x), height(window.getSize().y),
-    menu(window)
+    menu(window), world(window)
 {}
 
 void Simulation::run()
@@ -44,4 +44,5 @@ void Simulation::draw()
 {
     // TODO: draw all the things
     menu.draw(); 
+    world.draw(wnd);
 }

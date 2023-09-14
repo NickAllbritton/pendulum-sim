@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Menu.h"
+#include "World.h"
 
 #ifndef SIMULATION_H
 #define SIMULATION_H
@@ -23,6 +24,7 @@ public:
 private:
     sf::RenderWindow& wnd; // the simulation object owns a reference to the window handle
     Menu menu;
+    World world; // contains all the objects for the physics and logic
 };
 
 #endif
