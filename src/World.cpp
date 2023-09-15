@@ -8,13 +8,13 @@ World::World(sf::RenderWindow& wnd)
 
     // calculate the size of the world
     // TODO: define the world width as the leftover space after the menu options are drawn to the left
-    this->width = wnd.getSize().x / 2; // for now the width should be half the window width
+    this->width = wnd.getSize().x / 2 + 300.f; // for now the width should be half the window width
     this->height = wnd.getSize().y - 200.f;
     background.setSize(sf::Vector2f(width, height));
 
     // calculate the position of the world space
     // for now the x position of the box should be in the middle of the screen (moved a little to the left)
-    auto x = wnd.getSize().x / 2 - 10.f; 
+    auto x = wnd.getSize().x / 2 - 320.f; 
     auto y = 180.f;
 
     // TODO: change the y position from a hard-coded value potentially

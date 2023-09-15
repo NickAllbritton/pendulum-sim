@@ -1,11 +1,13 @@
 #include "Button.h"
+#include <iostream>
 
-Button::Button(sf::RenderWindow &wnd, sf::Font& font, sf::Color c, sf::Vector2f pos, float w, float h)
+Button::Button(sf::RenderWindow &wnd, sf::Font& font, sf::Color c, sf::Vector2f pos, std::string str, float w, float h)
 {
-    text.setCharacterSize(20.f);
+    text.setCharacterSize(30.f);
     text.setFillColor(c);
     text.setFont(font);
     text.setPosition(pos);
+    text.setString(str);
 
     // if the width and height are 0, that means automatically calculate the width and height
     width = (w > 0.f) ? w : text.getLocalBounds().width;
@@ -15,8 +17,8 @@ Button::Button(sf::RenderWindow &wnd, sf::Font& font, sf::Color c, sf::Vector2f 
     state = false;
 }
 
-Button::Button(sf::RenderWindow &wnd, sf::Font& font, sf::Color c, sf::Vector2f pos, const sf::Vector2f &size)
-    : Button(wnd, font, c, pos, size.x, size.y) // call the first constructor
+Button::Button(sf::RenderWindow &wnd, sf::Font& font, sf::Color c, sf::Vector2f pos, std::string str, const sf::Vector2f &size)
+    : Button(wnd, font, c, pos, str, size.x, size.y) // call the first constructor
 {
 }
 
@@ -41,8 +43,8 @@ void Button::click()
     state = !state;
 }
 
-bool Button::mouseClickWithinBounds(sf::Vector2f pos)
+bool Button::mouseClickWithinBounds(sf::Vector2f mPos)
 {
-    return pos.x < this->pos.x + width && pos.x > this->pos.x
-            && pos.y < this->pos.y + height && pos.y > this->pos.y;
+    return (mPos.x < pos.x + width) && (mPos.x > pos.x)
+            && (mPos.y < pos.y + height) && (mPos.y > pos.y);
 }

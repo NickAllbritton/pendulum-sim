@@ -25,6 +25,8 @@ private:
     sf::RenderWindow& wnd; // the simulation object owns a reference to the window handle
     Menu menu;
     World world; // contains all the objects for the physics and logic
+    sf::Text clicked;
+    sf::Font font;
 };
 
 #endif
