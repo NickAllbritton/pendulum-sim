@@ -45,6 +45,10 @@ void Button::click()
 
 bool Button::mouseClickWithinBounds(sf::Vector2f mPos)
 {
+    // it seems like the mouse value that is returned by the OS is not the TIP of the mouse
+    // pointer. Therefore, I will offset mPos to make more since
+
+    mPos = mPos - sf::Vector2f(4.f, 7.f);
     return (mPos.x < pos.x + width) && (mPos.x > pos.x)
             && (mPos.y < pos.y + height) && (mPos.y > pos.y);
 }
