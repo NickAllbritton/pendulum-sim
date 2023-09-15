@@ -30,6 +30,8 @@ void Simulation::events()
         {
             case sf::Event::KeyPressed:
                 if(event.key.code == sf::Keyboard::Q) wnd.close(); // press q to close the window
+            case sf::Event::MouseButtonPressed:
+                menu.clickAction(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)); // check if the mouse click hit a button
             break;
         }
     }

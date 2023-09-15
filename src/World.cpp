@@ -7,6 +7,7 @@ World::World(sf::RenderWindow& wnd)
     background.setFillColor(sf::Color::Black); 
 
     // calculate the size of the world
+    // TODO: define the world width as the leftover space after the menu options are drawn to the left
     this->width = wnd.getSize().x / 2; // for now the width should be half the window width
     this->height = wnd.getSize().y - 200.f;
     background.setSize(sf::Vector2f(width, height));

@@ -1,7 +1,8 @@
 #include <cmath>
 #include <random>
 #include <SFML/Graphics.hpp>
-#include <boost/numeric/odeint.hpp> // for ODE solvers
+// #include <vector>
+// #include <boost/numeric/odeint.hpp> // for ODE solvers
 
 #ifndef WORLD_H
 #define WORLD_H
@@ -18,6 +19,7 @@ private:
     sf::RectangleShape background;
     float width;
     float height;
+    // std::vector<Pendulum> systems;  // a dynamic array of pendulum systems that will each have different solving methods
 };
 
 #endif

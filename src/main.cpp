@@ -2,9 +2,17 @@
 
 int main()
 {
+    // Release
     // create the window object with the end-user's first available full screen mode
     // note: the title "PendulumSim" will not be displayed in full screen mode. 
     auto wnd = sf::RenderWindow{ sf::VideoMode::getFullscreenModes().at(0), "PendulumSim", sf::Style::Fullscreen };
+
+    // Debug
+    //auto wnd = sf::RenderWindow{ {1500u, 600u}, "PendulumSim"};
+
+
+    // holding down a key does not send repeated window events
+    wnd.setKeyRepeatEnabled(false);
 
     // the following line was in the example code to set the framerate limit
     // wnd.setFramerateLimit(144);
