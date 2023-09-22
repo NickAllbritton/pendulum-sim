@@ -8,7 +8,9 @@ Simulation::Simulation(sf::RenderWindow &window)
     L = wnd.getSize().y * .5;
     m = 1.f;
     systems = std::vector<Pendulum>(0);
-    systems.push_back(Pendulum(world, L, m, sf::Vector2f(0.f, 0.f), sf::Color::Magenta));
+    float x = -L/5.f;
+    float y = L - std::sqrt(L*L - x*x);
+    systems.push_back(Pendulum(world, L, m, sf::Vector2f(x, y), sf::Color::Magenta));
 }
 
 void Simulation::run()

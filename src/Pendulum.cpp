@@ -13,8 +13,8 @@ Bob::Bob(float mass, sf::Vector2f pos, sf::Color c)
 
 void Bob::draw(sf::RenderWindow &wnd, World& world)
 {
-    img.setPosition(World::ScreenPos(world, 
-            pos + sf::Vector2f{-img.getLocalBounds().getSize().x / 2.f, img.getLocalBounds().getSize().y / 2.f}));
+    img.setOrigin({img.getLocalBounds().getSize().x / 2.f, img.getLocalBounds().getSize().y / 2.f});
+    img.setPosition(World::ScreenPos(world, pos));
     wnd.draw(img);
 }
 
@@ -31,7 +31,7 @@ Pendulum::Pendulum(World& world, float length, float mass, sf::Vector2f bobPos, 
     // TODO: rotate the pendulum into position in case bobPos is initially not the origin
     // rod.setOrigin(World::ScreenPos(world, sf::Vector2f{0.f, length - 2.f}));
     rod.setPosition(World::ScreenPos(world, sf::Vector2f{0.f, L - 2.f}));
-    // rod.rotate(180.f / M_1_PI * std::asin(bob.getPos().x / L));
+    rod.setRotation((180.f / M_PI) * -std::asin(bob.getPos().x / L));
 }
 
 void Pendulum::draw(sf::RenderWindow &wnd, World& world)
@@ -40,8 +40,8 @@ void Pendulum::draw(sf::RenderWindow &wnd, World& world)
     // for some reason this rotation code and the code in the constructor does not work
     // it doesn't display the rod at all
     // rod.setOrigin(World::ScreenPos(world, sf::Vector2f{0.f, L - 2.f}));
-    // rod.rotate(180.f / M_1_PI * std::asin(bob.getPos().x / L));
     rod.setPosition(World::ScreenPos(world, sf::Vector2f{0.f, L - 2.f}));
+    rod.setRotation((180.f / M_PI) * -std::asin(bob.getPos().x / L));
 
     wnd.draw(rod);
     bob.draw(wnd, world);
