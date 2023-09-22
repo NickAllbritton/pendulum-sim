@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Menu.h"
 #include "World.h"
+#include "Pendulum.h"
 
 #ifndef SIMULATION_H
 #define SIMULATION_H
@@ -27,6 +28,11 @@ private:
     World world; // contains all the objects for the physics and logic
     sf::Text clicked;
     sf::Font font;
+    std::vector<Pendulum> systems;  // a dynamic array of pendulum systems that will each have different solving methods
+
+    // system variables
+    float L; // length of the rod
+    float m; // mass of the bob
 };
 
 #endif

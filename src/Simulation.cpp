@@ -3,8 +3,13 @@
 Simulation::Simulation(sf::RenderWindow &window)
     : wnd(window), 
     width(window.getSize().x), height(window.getSize().y),
-    menu(window), world(window)
-{}
+    menu(window), world(window, wnd.getSize().y * .5, 1.f)
+{
+    L = wnd.getSize().y * .5;
+    m = 1.f;
+    systems = std::vector<Pendulum>(0);
+    systems.push_back(Pendulum(world, L, m, sf::Vector2f(0.f, 0.f), sf::Color::Magenta));
+}
 
 void Simulation::run()
 {
@@ -47,4 +52,8 @@ void Simulation::draw()
     // TODO: draw all the things
     menu.draw(); 
     world.draw(wnd);
+    for(auto& system : systems)
+    {
+        system.draw(wnd, world);
+    }
 }

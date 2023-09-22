@@ -1,7 +1,7 @@
 #include "World.h"
 
-World::World(sf::RenderWindow& wnd)
-    : L(wnd.getSize().y * .5), m(1.f)
+World::World(sf::RenderWindow& wnd, float L, float mass)
+    : L(L), m(mass)
 {
     nexaLight.loadFromFile("./resources/Nexa-ExtraLight.ttf");
 
@@ -151,7 +151,6 @@ World::World(sf::RenderWindow& wnd)
     /******************************************************************************************/
     /*                               Create the physical system                               */
     /******************************************************************************************/
-
 }
 
 void World::draw(sf::RenderWindow& wnd)
@@ -174,7 +173,4 @@ void World::draw(sf::RenderWindow& wnd)
     {
         wnd.draw(label);
     }
-
-    // draw the pendulums
-
 }

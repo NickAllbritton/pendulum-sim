@@ -10,10 +10,15 @@
 class World
 {
 public:
-    World(sf::RenderWindow& wnd); 
+    World(sf::RenderWindow& wnd, float length, float mass); 
     // World = delete; // once the constructor is written delete the default constructor
     ~World() = default;
     void draw(sf::RenderWindow& wnd); // draw the world
+    // allow outside functions to use a world object to define their drawable's positions
+    static sf::Vector2f ScreenPos(World& world, sf::Vector2f worldPos)
+    {
+        return world.screenPos(worldPos);
+    }
 private:
     // TODO: alternative to this solution use a sf::View to handle world coordinates
     // return the screen position of every position in the world coordinates
@@ -38,7 +43,6 @@ private:
     float height;
     const float L; // the length of the pendulum in world space
     const float m; // mass of the bob
-    // std::vector<Pendulum> systems;  // a dynamic array of pendulum systems that will each have different solving methods
 };
 
 #endif
