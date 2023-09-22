@@ -27,7 +27,6 @@ private:
         return origin + sf::Vector2f{worldPos.x, -worldPos.y}; // minus the y because negative y-values in screen space mean moving up
     }
 private:
-    // todo: create a vector of pendulum objects (one for each approximation method)
     sf::RectangleShape background;
     sf::RectangleShape x_axis;
     std::vector<sf::RectangleShape> x_ticks; // tick marks on the x-axis
