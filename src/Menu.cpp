@@ -49,8 +49,8 @@ void Menu::draw()
 	title.setCharacterSize(wnd.getSize().y*.16); // title height is 16% the window height
 	title.setFillColor(sf::Color(18, 188, 148));
 	title.setString("PendulumSIM");
-	// center the title on the screen and put the title at the top
-	title.setPosition(sf::Vector2f(wnd.getSize().x / 2.f - title.getLocalBounds().width / 2.f, 0.f));
+	// top of the screen with the same padding on the left as the menu buttons
+	title.setPosition(sf::Vector2f(wnd.getSize().y * .05, 0.f));
     wnd.draw(title);
 
     /*************************/
