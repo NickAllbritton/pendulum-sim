@@ -10,7 +10,7 @@ Menu::Menu(sf::RenderWindow &wnd)
     for(int i = 0; i < nOptions; i++)
     {
         // initialize buttons
-        sf::Vector2f pos(30.f, 200.f + (float)i * 50.f);
+        sf::Vector2f pos(wnd.getSize().y * .05, wnd.getSize().y * .2 + (float)i * wnd.getSize().y * .09);
         Button b;
 
         // use the loop as a means of setting the text properly to each button
@@ -46,14 +46,11 @@ void Menu::draw()
     /***********************/
 
     title.setFont(vanilla_rav);
-	title.setCharacterSize(120.f);
+	title.setCharacterSize(wnd.getSize().y*.16); // title height is 16% the window height
 	title.setFillColor(sf::Color(18, 188, 148));
 	title.setString("PendulumSIM");
-	// for the x:
-	// divide the window width in half and subtract half the length of the title
-	// for the y:
-	// hardcoded for now... TODO: change the y to a dynamic value
-	title.setPosition(sf::Vector2f(wnd.getSize().x / 2.f - title.getLocalBounds().width / 2.f, 5.f));
+	// center the title on the screen and put the title at the top
+	title.setPosition(sf::Vector2f(wnd.getSize().x / 2.f - title.getLocalBounds().width / 2.f, 0.f));
     wnd.draw(title);
 
     /*************************/

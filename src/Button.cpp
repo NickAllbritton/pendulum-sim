@@ -3,7 +3,7 @@
 
 Button::Button(sf::RenderWindow &wnd, sf::Font& font, sf::Color c, sf::Vector2f pos, std::string str, float w, float h)
 {
-    text.setCharacterSize(30.f);
+    text.setCharacterSize(wnd.getSize().y * .05); // 5% of the screen height
     text.setFillColor(c);
     text.setFont(font);
     text.setPosition(pos);

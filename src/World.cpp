@@ -6,19 +6,27 @@ World::World(sf::RenderWindow& wnd)
     background.setOutlineThickness(2.f);
     background.setFillColor(sf::Color::Black); 
 
+    const float wndWidth = wnd.getSize().x;
+    const float wndHeight = wnd.getSize().y;
+
+    // did some algebra for this one. 
+    // .05 * wndH = padR                        | we want the padding at the bottom to be the same as on the right
+    // .05 * wndH = padRPercent * wndW          | express the padding on the right as a percent of the width
+    // .05 * wndH / wndW = padRPercent          | solve for the percent to be used in the width calculation
+    const float pRPercent = .05f * wndHeight / wndWidth; 
+
     // calculate the size of the world
-    // TODO: define the world width as the leftover space after the menu options are drawn to the left
-    this->width = wnd.getSize().x / 2 + 300.f; // for now the width should be half the window width
-    this->height = wnd.getSize().y - 200.f;
+    this->width = wndWidth * (.70-pRPercent); // the 70% space left after the left most of the position minus the percent of the width for
+                                             // padding
+    this->height = wndHeight * .75; // and the height is 75% of the screen
     background.setSize(sf::Vector2f(width, height));
 
     // calculate the position of the world space
-    // for now the x position of the box should be in the middle of the screen (moved a little to the left)
-    auto x = wnd.getSize().x / 2 - 320.f; 
-    auto y = 180.f;
-
-    // TODO: change the y position from a hard-coded value potentially
+    auto x = .3 * wndWidth; // 30% the screen space to the right to leave that much space for the menu to the right
+    auto y = .2 * wndHeight; // 1/5 the screen space down from the top to leave space for the title
     background.setPosition(sf::Vector2f(x, y));
+
+    
 }
 
 void World::draw(sf::RenderWindow& wnd)
