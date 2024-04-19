@@ -28,7 +28,7 @@ private:
         // Following the simplest convention in mechanics we set the origin of our world coordinates to the point of
         // minimum potential energy
         sf::Vector2f origin(background.getGlobalBounds().getPosition().x + width / 2.f,
-                            background.getGlobalBounds().getPosition().y + L);
+                            background.getGlobalBounds().getPosition().y + 1.4f*L);
         return origin + sf::Vector2f{worldPos.x, -worldPos.y}; // minus the y because negative y-values in screen space mean moving up
     }
 private:
@@ -37,7 +37,8 @@ private:
     std::vector<sf::RectangleShape> x_ticks; // tick marks on the x-axis
     std::vector<sf::RectangleShape> y_ticks; // you can figure it out
     sf::RectangleShape y_axis;
-    std::vector<sf::Text> tick_labels; // tick labels for the x-axis
+    std::vector<sf::Text> tick_xlabels; // tick labels for the x-axis
+    std::vector<sf::Text> tick_ylabels; // tick labels for the y-axis
     sf::Font nexaLight; // font for tick marks and other data displayed
     float width;
     float height;

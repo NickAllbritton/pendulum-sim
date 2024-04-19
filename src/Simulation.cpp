@@ -1,11 +1,19 @@
 #include "Simulation.h"
 
+
+sf::Vector2f polarPos(sf::Vector2f& rect)
+{
+    float r = std::sqrt(rect.x*rect.x + rect.y*rect.y);
+    float theta = (180.f / M_PI) * std::atan(rect.y / rect.x);
+    return sf::Vector2f{r, theta};
+}
+
 Simulation::Simulation(sf::RenderWindow &window)
     : wnd(window), 
     width(window.getSize().x), height(window.getSize().y),
-    menu(window), world(window, wnd.getSize().y * .5, 1.f)
+    menu(window), world(window, wnd.getSize().y * .45, 1.f)
 {
-    L = wnd.getSize().y * .5;
+    L = wnd.getSize().y * .45;
     m = 1.f;
     systems = std::vector<Pendulum>(0);
     float x = -L/5.f;
@@ -51,6 +59,7 @@ void Simulation::events()
 void Simulation::update()
 {
     // TODO: do physics
+    
 }
 
 void Simulation::draw()
