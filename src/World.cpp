@@ -43,7 +43,7 @@ World::World(sf::RenderWindow& wnd, float L, float mass)
     y_axis.setSize({ 0.f , height});
 
     // start right after the border at the height of the bob at minimum
-    x_axis.setPosition(background.getGlobalBounds().getPosition() + sf::Vector2f{2.f , L}); 
+    x_axis.setPosition(background.getGlobalBounds().getPosition() + sf::Vector2f{2.f , 1.4f*L}); 
     // start right after the border centered
     y_axis.setPosition(background.getGlobalBounds().getPosition() + sf::Vector2f{width / 2.f , 2.f}); 
 
@@ -82,40 +82,14 @@ World::World(sf::RenderWindow& wnd, float L, float mass)
         pos += {.25f * L , 0.f}; // move to the next tick a L/4 to the right
     }
 
-    const int n_labels = int(nTicksX / 4); // with truncation to integer value this should always work
-    tick_labels = std::vector<sf::Text>(n_labels);
-    pos = { (n_labels / 2) * -L , -10.f}; // start from the left, right below the tick mark
-    for(int i = 0; i < n_labels; i++)
-    {
-        // this ensures that you do not draw a tick label on the origin
-        if(pos.x >= -1.f && pos.x < L) 
-        {
-            pos += { L,0.f }; // increment the pos as usual
-            i--; // decrease the index counter
-            continue; // move on
-        }
-
-
-        tick_labels.at(i).setCharacterSize(15.f);
-        tick_labels.at(i).setFont(nexaLight);
-        tick_labels.at(i).setFillColor(sf::Color::White);
-        std::string numString = ((pos.x < 0.f) ? "-":"") +             // print a negative sign if necessary
-                                ((pos.x > L + 1.f) ? std::to_string(int(n_labels / 2)) + "L" : "L"); // if the length is 1L only put L
-        tick_labels.at(i).setString(numString);
-        // center the label under the tick
-        tick_labels.at(i).setPosition(screenPos(pos) - sf::Vector2f{tick_labels.at(i).getLocalBounds().getSize().x / 2.f, 0.f});
-        pos += { L, 0.f }; // shift the position to the next value
-    }
-
-
     // the tick marks on the y-axis
 
     // TODO: fix the issue in the math below. a tick is drawn slightly above the world frame
     // temporary fix is just to decrease the number of ticks by 1. if someone has a dramatically
     // different screen size than mine, this is not guaranteed to not be buggy
-    int nTicksY = static_cast<int>(4 * height / L) - 1; // 4 ticks per length L
+    int nTicksY = static_cast<int>(4 * height / L); // 4 ticks per length L
     y_ticks = std::vector<sf::RectangleShape>(nTicksY); 
-    const int nTicksBelowXAxis = static_cast<int>(4.f * (height - L) / L); // the number of ticks that fit below the x-axis
+    const int nTicksBelowXAxis = static_cast<int>(4.f * (height - 1.4f*L) / L); // the number of ticks that fit below the x-axis
     // set the positions from bottom to top in world corrdinates
     pos = { 0.f, nTicksBelowXAxis * -L / 4.f };
     for(int i = 0; i < nTicksY; i++) // 
@@ -148,6 +122,58 @@ World::World(sf::RenderWindow& wnd, float L, float mass)
         pos += { 0.f, .25f * L }; // move to the next tick a L/4 to the right
     }
 
+    const int n_xlabels = int(nTicksX / 4); // with truncation to integer value this should always work
+    tick_xlabels = std::vector<sf::Text>(n_xlabels);
+    pos = { (n_xlabels / 2) * -L , -10.f}; // start from the left, right below the tick mark
+    for(int i = 0; i < n_xlabels; i++)
+    {
+        // this ensures that you do not draw a tick label on the origin
+        if(pos.x >= -1.f && pos.x < L) 
+        {
+            pos += { L,0.f }; // increment the pos as usual
+            i--; // decrease the index counter
+            continue; // move on
+        }
+
+        
+        tick_xlabels.at(i).setCharacterSize(15.f);
+        tick_xlabels.at(i).setFont(nexaLight);
+        tick_xlabels.at(i).setFillColor(sf::Color::White);
+        std::string numString = ((pos.x < 0.f) ? "-":"") +             // print a negative sign if necessary
+                                ((std::abs(pos.x) > L + 1.f) ? 
+                                std::to_string(int((std::abs(pos.x) + 1.f) / L)) + "L" : "L"); // prepend integer in front of L
+        tick_xlabels.at(i).setString(numString);
+        // center the label under the tick
+        tick_xlabels.at(i).setPosition(screenPos(pos) - sf::Vector2f{tick_xlabels.at(i).getLocalBounds().getSize().x / 2.f, 0.f});
+        pos += { L, 0.f }; // shift the position to the next value
+    }
+
+    const int n_ylabels = int(nTicksY / 4); // with truncation to integer value this should always work
+    tick_ylabels = std::vector<sf::Text>(n_ylabels);
+    pos = { 10.f , L }; // start from the bottom to the top, to the right of the tick mark
+    for(int i = 0; i < n_ylabels; i++)
+    {
+        // this ensures that you do not draw a tick label on the origin
+        if(pos.y >= -1.f && pos.y < L) 
+        {
+            pos += { 0.f,-L }; // increment the pos as usual
+            i--; // decrease the index counter
+            continue; // move on
+        }
+
+        
+        tick_ylabels.at(i).setCharacterSize(15.f);
+        tick_ylabels.at(i).setFont(nexaLight);
+        tick_ylabels.at(i).setFillColor(sf::Color::White);
+        std::string numString = ((pos.y < 0.f) ? "-":"") +             // print a negative sign if necessary
+                                ((std::abs(pos.y) > L + 1.f) ? 
+                                std::to_string(int((std::abs(pos.y) + 1.f) / L)) + "L" : "L"); // if the length is 1L only put L
+        tick_ylabels.at(i).setString(numString);
+        // center the label with the tick
+        tick_ylabels.at(i).setPosition(screenPos(pos) - sf::Vector2f{ 0.f , tick_ylabels.at(i).getLocalBounds().getSize().y / 2.f});
+        pos += { 0.f, -L }; // shift the position to the next value
+    }
+
     /******************************************************************************************/
     /*                               Create the physical system                               */
     /******************************************************************************************/
@@ -169,7 +195,11 @@ void World::draw(sf::RenderWindow& wnd)
     {
         wnd.draw(tick);
     }
-    for(auto& label : tick_labels)
+    for(auto& label : tick_xlabels)
+    {
+        wnd.draw(label);
+    }
+    for(auto& label : tick_ylabels)
     {
         wnd.draw(label);
     }
