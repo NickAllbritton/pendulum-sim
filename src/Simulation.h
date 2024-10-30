@@ -35,6 +35,10 @@ private:
     // system variables
     float L; // length of the rod
     float m; // mass of the bob
+    bool play; // is time evolving
+    float initialAngle;
+    float t; // time variable
+    float dt; // steps in time
 };
 
 #endif

@@ -18,7 +18,7 @@ public:
     {
         return pos;
     }
-    const sf::Vector2f& setPos(sf::Vector2f newPos)
+    const sf::Vector2f& setPos(const sf::Vector2f& newPos)
     {
         return pos = newPos;
     }

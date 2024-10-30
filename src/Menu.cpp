@@ -74,3 +74,15 @@ SolutionMethod Menu::clickAction(sf::Vector2f mPos)
     }
     return SolutionMethod::NULLMethod;
 }
+
+MenuOptions Menu::clickNULLMethod(sf::Vector2f mPos)
+{
+    for(Button& b : menuOptions)
+    {
+        if(b.mouseClickWithinBounds(mPos)) 
+        {
+            if(b.getText() == "Play") return MenuOptions::PlayPause;
+            else return MenuOptions::About;
+        }
+    }
+}

@@ -3,8 +3,8 @@
 
 sf::Vector2f polarPos(const sf::Vector2f& rect)
 {
-    float r = std::sqrt(rect.x*rect.x + rect.y*rect.y);
-    float theta = (180.f / M_PI) * std::atan(rect.y / rect.x);
+    float r = (rect.x*rect.x+rect.y*rect.y) / (2.f * rect.y);
+    float theta = std::asin(rect.x / r);
     return sf::Vector2f{r, theta};
 }
 
@@ -23,6 +23,11 @@ Simulation::Simulation(sf::RenderWindow &window)
 {
     L = wnd.getSize().y * .45f;
     m = 1.f;
+    t = 0.f;
+    dt = 0.001f;
+    play = false;
+    initialAngle = M_PI / 4.f;
+
     systems = std::vector<Pendulum>(0);
 }
 
@@ -93,7 +98,15 @@ void Simulation::events()
                 }
                 else
                 {
-                    //TODO: call a new method to handle play and about buttons
+                    MenuOptions action = menu.clickNULLMethod(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
+                    if(action == MenuOptions::PlayPause)
+                    {
+                        play = true;
+                    }
+                    else
+                    {
+                        //TODO: Display about page.... 
+                    }
                 }
                 break;
         }
@@ -102,8 +115,31 @@ void Simulation::events()
 
 void Simulation::update()
 {
-    // TODO: do physics
-    
+    if(systems.size() != 0)
+    {
+        for(auto& sys : systems)
+        {
+            if(sys.method == SolutionMethod::SmallAngle)
+            {
+                sf::Vector2f polPos = polarPos(sys.getBobPos());
+                sys.setBobPos(rectPos(smallAngle(t, polPos.x, initialAngle)));
+            }
+            else if(sys.method == SolutionMethod::Euler)
+            {
+                // approximate the system using Euler method
+            }
+            else if(sys.method == SolutionMethod::EulerCromer)
+            {
+                // approximate the system using Euler-Cromer method
+            }
+            else if(sys.method == SolutionMethod::RungeKutta)
+            {
+                // approximate the system using Runge-Kutta method
+            }
+        }
+    }
+
+    if(play) t += dt; // update the time
 }
 
 void Simulation::draw()

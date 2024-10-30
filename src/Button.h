@@ -16,6 +16,10 @@ public:
     ~Button() = default;
     void draw(sf::RenderWindow& wnd);
     void setText(std::string t);
+    std::string getText()
+    {
+        return text.getString();
+    }
     SolutionMethod click();
     bool mouseClickWithinBounds(sf::Vector2f pos);
 public:
