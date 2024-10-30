@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "World.h"
+#include "Physics.h"
 
 #ifndef PENDULUM_H
 #define PENDULUM_H
@@ -31,7 +32,7 @@ private:
 class Pendulum
 {
 public:
-    Pendulum(World& world, float length, float mass, sf::Vector2f bobPos, sf::Color bobC);
+    Pendulum(World& world, float length, float mass, sf::Vector2f bobPos, SolutionMethod method, sf::Color bobC);
     Pendulum() = default;
     ~Pendulum() = default;
     void draw(sf::RenderWindow& wnd, World& world);
@@ -43,6 +44,10 @@ public:
     {
         return bob.setPos(newPos);
     }
+
+public:
+    SolutionMethod method;
+
 private:
     Bob bob; // the bob
     sf::RectangleShape rod;

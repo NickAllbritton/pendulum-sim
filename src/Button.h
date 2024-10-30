@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include "Physics.h"
+#include "Pendulum.h"
 
 #ifndef BUTTON_H
 #define BUTTON_H
@@ -14,7 +16,7 @@ public:
     ~Button() = default;
     void draw(sf::RenderWindow& wnd);
     void setText(std::string t);
-    void click();
+    SolutionMethod click();
     bool mouseClickWithinBounds(sf::Vector2f pos);
 public:
     sf::Vector2f pos; // position of top left corner of the button's hitbox

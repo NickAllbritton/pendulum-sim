@@ -13,12 +13,14 @@ public:
     Simulation() = delete; // default constructor should NOT be defined
     ~Simulation() = default; // default destructor is fine
     void run(); // run the simulation
+    void addSystem(SolutionMethod method);
+    void removeSystem(SolutionMethod method); 
 
 private:
     void events(); // handle events
     void update(); // simulation logic and physics
     void draw(); // draw the scene/system
-
+    
 public:
     float width; // window width (excluding border, etc...)
     float height;

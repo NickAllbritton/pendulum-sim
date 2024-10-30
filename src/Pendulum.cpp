@@ -18,14 +18,12 @@ void Bob::draw(sf::RenderWindow &wnd, World& world)
     wnd.draw(img);
 }
 
-Pendulum::Pendulum(World& world, float length, float mass, sf::Vector2f bobPos, sf::Color bobC)
-    : bob(mass, bobPos, bobC)
+Pendulum::Pendulum(World& world, float length, float mass, sf::Vector2f bobPos, SolutionMethod method, sf::Color bobC)
+    : bob(mass, bobPos, bobC), method(method), L(length)
 {
-    L = length;
-
-    rod.setSize({ 0.f,length });
-    rod.setOutlineColor(sf::Color(25, 25, 25)); // dark grey
-    rod.setFillColor(sf::Color::White);
+    rod.setSize({ 1.f,length });
+    rod.setOutlineColor(sf::Color::White); 
+    rod.setFillColor(sf::Color(25, 25, 25)); // dark grey
     rod.setOutlineThickness(1.f);
 
     // TODO: rotate the pendulum into position in case bobPos is initially not the origin

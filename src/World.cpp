@@ -25,13 +25,15 @@ World::World(sf::RenderWindow& wnd, float L, float mass)
     background.setSize(sf::Vector2f(width, height));
 
     // calculate the position of the world space
-    auto x = .3 * wndWidth; // 30% the screen space to the right to leave that much space for the menu to the right
+    auto x = .3 * wndWidth; // 30% the screen space to the right to leave that much space for the menu to the left
     auto y = .2 * wndHeight; // 1/5 the screen space down from the top to leave space for the title
     background.setPosition(sf::Vector2f(x, y));
 
     /******************************************************************************************/
     /*                               Create the coordinate system                             */
     /******************************************************************************************/
+
+    // aesthetics of axes
     x_axis.setOutlineColor(sf::Color::White);
     x_axis.setOutlineThickness(1.f);
     x_axis.setFillColor(sf::Color::White); 
@@ -42,6 +44,8 @@ World::World(sf::RenderWindow& wnd, float L, float mass)
     x_axis.setSize({ width , 0.f }); // a line with no thickness minus a border 
     y_axis.setSize({ 0.f , height});
 
+
+    // position of axes
     // start right after the border at the height of the bob at minimum
     x_axis.setPosition(background.getGlobalBounds().getPosition() + sf::Vector2f{2.f , 1.4f*L}); 
     // start right after the border centered

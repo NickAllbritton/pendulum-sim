@@ -63,14 +63,14 @@ void Menu::draw()
     }
 }
 
-void Menu::clickAction(sf::Vector2f mPos)
+SolutionMethod Menu::clickAction(sf::Vector2f mPos)
 {
-    
     for(Button& b : menuOptions)
     {
         if(b.mouseClickWithinBounds(mPos)) 
         {
-            b.click();
+            return b.click();
         }
     }
+    return SolutionMethod::NULLMethod;
 }
