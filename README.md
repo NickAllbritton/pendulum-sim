@@ -7,6 +7,8 @@ The template included:
 - Basic CMake script to build your project and link SFML on any operating system. If you don't know what that is, it should be okay. If you run into issues, though, reach out!
 - Basic [GitHub Actions](https://github.com/features/actions) script for all major platforms. (Not important for us).
 
+![Screenshot of simulation from 11-2-2024](./github-items/ScreenShot-11-2-2024.png)
+
 ## How to Use
 (changed slightly from template readme)
 

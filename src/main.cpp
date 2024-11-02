@@ -5,10 +5,10 @@ int main()
     // Release
     // create the window object with the end-user's first available full screen mode
     // note: the title "PendulumSim" will not be displayed in full screen mode. 
-    auto wnd = sf::RenderWindow{ sf::VideoMode::getFullscreenModes().at(0), "PendulumSim", sf::Style::Fullscreen };
+    // auto wnd = sf::RenderWindow{ sf::VideoMode::getFullscreenModes().at(0), "PendulumSim", sf::Style::Fullscreen };
 
     // Debug
-    // auto wnd = sf::RenderWindow{ {1500u, 800u}, "PendulumSim"};
+    auto wnd = sf::RenderWindow{ {1500u, 800u}, "PendulumSim"};
 
 
     // holding down a key does not send repeated window events
