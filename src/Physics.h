@@ -23,6 +23,7 @@ namespace Physics
 
     sf::Vector2f smallAngle(float time, float L, float theta_i);
 
+    std::pair<sf::Vector2f, sf::Vector2f> euler(float dt, sf::Vector2f prevPos, sf::Vector2f prevVel);
 }
 
 #endif

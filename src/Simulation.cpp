@@ -9,7 +9,7 @@ Simulation::Simulation(sf::RenderWindow &window)
     m = 1.f;
     t = 0.f;
     play = false;
-    initialAngle = M_PI / 4.f;
+    initialAngle = 8.f * M_PI / 15.f;
     ft = FrameTimer();
 
     systems = std::vector<Pendulum>(0);
@@ -30,13 +30,16 @@ void Simulation::run()
     wnd.display(); // display the window
 }
 
-void Simulation::addSystem(Physics::SolutionMethod method)
+void Simulation::addSystem(Physics::SolutionMethod method, sf::Vector2f pos)
 {
-    systems.push_back(Pendulum(world, L, m, sf::Vector2f{L, M_PI / 4.f}, method, sf::Color::Cyan));
+    systems.push_back(Pendulum(world, L, m, pos, method, sf::Color::Cyan));
 }
 
 void Simulation::removeSystem(Physics::SolutionMethod method)
 {
+    // start time over when removing small angle pendulum
+    if(method == Physics::SolutionMethod::SmallAngle) t = 0.f; 
+
     int index_remove;
     // find the index of the system to remove
     for(int i = 0; i < systems.size(); i++)
@@ -78,7 +81,7 @@ void Simulation::events()
                         if(system.method == method) systemCreated = true;
                     }
                     if(systemCreated) removeSystem(method);
-                    else addSystem(method);
+                    else addSystem(method, sf::Vector2f{L, initialAngle});
                 }
                 else
                 {
@@ -100,6 +103,7 @@ void Simulation::events()
 void Simulation::update()
 {
     dt = ft.frame(); // calculate the time between frames
+    dt = play ? dt : 0.f; // if the sim is not in play, set dt to 0
 
     if(systems.size() != 0)
     {
@@ -111,7 +115,10 @@ void Simulation::update()
             }
             else if(sys.method == Physics::SolutionMethod::Euler)
             {
-                // approximate the system using Euler method
+                // return a std::pair of the values of the position and velocity
+                auto theta_sys = Physics::euler(dt, sys.getBobPos(), sys.getBobVel());
+                sys.setBobPos(theta_sys.first);
+                sys.setBobVel(theta_sys.second);
             }
             else if(sys.method == Physics::SolutionMethod::EulerCromer)
             {

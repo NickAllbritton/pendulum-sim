@@ -22,8 +22,17 @@ public:
     {
         return pos = newPos;
     }
+    const sf::Vector2f getVel() const
+    {
+        return vel;
+    }
+    const sf::Vector2f& setVel(const sf::Vector2f& newVel)
+    {
+        return vel = newVel;
+    }
 private:
     sf::Vector2f pos; // position of the bob in polar coordinates
+    sf::Vector2f vel;
     float r; // the radius
     sf::CircleShape img;
 };
@@ -44,7 +53,14 @@ public:
     {
         return bob.setPos(newPos);
     }
-
+    const sf::Vector2f getBobVel() const
+    {
+        return bob.getVel();
+    }
+    const sf::Vector2f& setBobVel(const sf::Vector2f& newVel)
+    {
+        return bob.setVel(newVel);
+    }
 public:
     Physics::SolutionMethod method;
 

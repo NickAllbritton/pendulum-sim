@@ -22,6 +22,7 @@ sf::Vector2f rectPos(const sf::Vector2f& polar)
 Bob::Bob(float mass, sf::Vector2f pos, sf::Color c)
 {
     this->pos = pos;
+    vel = sf::Vector2f{0.f, 0.f};
     r = 15.f; // TODO: give a dynamic calculation so that larger mass has a larger radius
     img.setFillColor(c);
     img.setRadius(r);
