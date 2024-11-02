@@ -28,13 +28,13 @@ Pendulum::Pendulum(World& world, float length, float mass, sf::Vector2f bobPos, 
 
     // TODO: rotate the pendulum into position in case bobPos is initially not the origin
     // rod.setOrigin(World::ScreenPos(world, sf::Vector2f{0.f, length - 2.f}));
-    rod.setPosition(World::ScreenPos(world, sf::Vector2f{0.f, L - 2.f}));
+    rod.setPosition(World::ScreenPos(world, sf::Vector2f{0.f, L}));
     rod.setRotation((180.f / M_PI) * -std::asin(bob.getPos().x / L));
 }
 
 void Pendulum::draw(sf::RenderWindow &wnd, World& world)
 {
-    rod.setPosition(World::ScreenPos(world, sf::Vector2f{0.f, L - 2.f}));
+    rod.setPosition(World::ScreenPos(world, sf::Vector2f{0.f, L}));
     rod.setRotation((180.f / M_PI) * -std::asin(bob.getPos().x / L));
 
     wnd.draw(rod);
