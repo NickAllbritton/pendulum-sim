@@ -1,6 +1,24 @@
 #include <cmath>
 #include "Pendulum.h"
 
+// DO NOT USE THIS FUNCTION. arcsin is not ideal for calculating angles
+sf::Vector2f polarPos(const sf::Vector2f& rect)
+{
+    float r = (rect.x*rect.x+rect.y*rect.y) / (2.f * rect.y);
+    float theta = std::asin(rect.x / r);
+    return sf::Vector2f{r, theta};
+}
+
+sf::Vector2f rectPos(const sf::Vector2f& polar)
+{
+    // polar.y = theta --- the angle measured from the vertical
+    // polar.x = r --- the distance from (0, L)
+    float x = polar.x * std::sin(polar.y);
+    float y = polar.x - polar.x * std::cos(polar.y);
+    return sf::Vector2f{x, y};
+}
+
+
 Bob::Bob(float mass, sf::Vector2f pos, sf::Color c)
 {
     this->pos = pos;
@@ -14,7 +32,7 @@ Bob::Bob(float mass, sf::Vector2f pos, sf::Color c)
 void Bob::draw(sf::RenderWindow &wnd, World& world)
 {
     img.setOrigin({img.getLocalBounds().getSize().x / 2.f, img.getLocalBounds().getSize().y / 2.f});
-    img.setPosition(World::ScreenPos(world, pos));
+    img.setPosition(World::ScreenPos(world, rectPos(pos)));
     wnd.draw(img);
 }
 
@@ -27,15 +45,16 @@ Pendulum::Pendulum(World& world, float length, float mass, sf::Vector2f bobPos, 
     rod.setOutlineThickness(1.f);
 
     // TODO: rotate the pendulum into position in case bobPos is initially not the origin
-    // rod.setOrigin(World::ScreenPos(world, sf::Vector2f{0.f, length - 2.f}));
     rod.setPosition(World::ScreenPos(world, sf::Vector2f{0.f, L}));
-    rod.setRotation((180.f / M_PI) * -std::asin(bob.getPos().x / L));
+    // convert the bobPos.y (theta) into degrees and flip the sign due to SFML standards
+    rod.setRotation((180.f / M_PI) * -bobPos.y);
 }
 
 void Pendulum::draw(sf::RenderWindow &wnd, World& world)
 {
     rod.setPosition(World::ScreenPos(world, sf::Vector2f{0.f, L}));
-    rod.setRotation((180.f / M_PI) * -std::asin(bob.getPos().x / L));
+    // convert the bobPos.y (theta) into degrees and flip the sign due to SFML standards
+    rod.setRotation((180.f / M_PI) * -bob.getPos().y);
 
     wnd.draw(rod);
     bob.draw(wnd, world);

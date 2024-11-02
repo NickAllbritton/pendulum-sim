@@ -1,21 +1,5 @@
 #include "Simulation.h"
 
-
-sf::Vector2f polarPos(const sf::Vector2f& rect)
-{
-    float r = (rect.x*rect.x+rect.y*rect.y) / (2.f * rect.y);
-    float theta = std::asin(rect.x / r);
-    return sf::Vector2f{r, theta};
-}
-
-sf::Vector2f rectPos(const sf::Vector2f& polar)
-{
-    // usual polar coordinates but shifted by 90 degrees so that straight down is 0 degrees
-    float x = polar.x * std::cos(polar.y - M_PI / 2.f);
-    float y = polar.x * std::sin(polar.y - M_PI / 2.f);
-    return sf::Vector2f{x, y + polar.x};
-}
-
 Simulation::Simulation(sf::RenderWindow &window)
     : wnd(window), 
     width(window.getSize().x), height(window.getSize().y),
@@ -49,7 +33,7 @@ void Simulation::run()
 
 void Simulation::addSystem(SolutionMethod method)
 {
-    systems.push_back(Pendulum(world, L, m, rectPos(sf::Vector2f{L, M_PI / 4.f}), method, sf::Color::Cyan));
+    systems.push_back(Pendulum(world, L, m, sf::Vector2f{L, M_PI / 4.f}, method, sf::Color::Cyan));
 }
 
 void Simulation::removeSystem(SolutionMethod method)
@@ -124,8 +108,7 @@ void Simulation::update()
         {
             if(sys.method == SolutionMethod::SmallAngle)
             {
-                sf::Vector2f polPos = polarPos(sys.getBobPos());
-                sys.setBobPos(rectPos(smallAngle(t, polPos.x, initialAngle)));
+                sys.setBobPos(smallAngle(t, sys.getBobPos().x, initialAngle));
             }
             else if(sys.method == SolutionMethod::Euler)
             {

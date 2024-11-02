@@ -23,7 +23,7 @@ public:
         return pos = newPos;
     }
 private:
-    sf::Vector2f pos; // position of the bob in cartesian coordinates
+    sf::Vector2f pos; // position of the bob in polar coordinates
     float r; // the radius
     sf::CircleShape img;
 };
