@@ -27,6 +27,7 @@ Simulation::Simulation(sf::RenderWindow &window)
     dt = 0.001f;
     play = false;
     initialAngle = M_PI / 4.f;
+    ft = FrameTimer();
 
     systems = std::vector<Pendulum>(0);
 }
@@ -101,7 +102,7 @@ void Simulation::events()
                     MenuOptions action = menu.clickNULLMethod(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
                     if(action == MenuOptions::PlayPause)
                     {
-                        play = true;
+                        play = !play;
                     }
                     else
                     {
@@ -115,6 +116,8 @@ void Simulation::events()
 
 void Simulation::update()
 {
+    dt = ft.frame(); // calculate the time between frames
+
     if(systems.size() != 0)
     {
         for(auto& sys : systems)
@@ -139,7 +142,7 @@ void Simulation::update()
         }
     }
 
-    if(play) t += dt; // update the time
+    if(play) t += dt; // update the time if the game is in play
 }
 
 void Simulation::draw()

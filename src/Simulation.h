@@ -2,6 +2,7 @@
 #include "Menu.h"
 #include "World.h"
 #include "Pendulum.h"
+#include "FrameTimer.h"
 
 #ifndef SIMULATION_H
 #define SIMULATION_H
@@ -37,7 +38,8 @@ private:
     float m; // mass of the bob
     bool play; // is time evolving
     float initialAngle;
-    float t; // time variable
+    FrameTimer ft; // object to calculate the time of a frame so that times are consistent
+    float t; // the newtonian universal time
     float dt; // steps in time
 };
 
