@@ -32,7 +32,7 @@ private:
 class Pendulum
 {
 public:
-    Pendulum(World& world, float length, float mass, sf::Vector2f bobPos, SolutionMethod method, sf::Color bobC);
+    Pendulum(World& world, float length, float mass, sf::Vector2f bobPos, Physics::SolutionMethod method, sf::Color bobC);
     Pendulum() = default;
     ~Pendulum() = default;
     void draw(sf::RenderWindow& wnd, World& world);
@@ -46,7 +46,7 @@ public:
     }
 
 public:
-    SolutionMethod method;
+    Physics::SolutionMethod method;
 
 private:
     Bob bob; // the bob

@@ -36,7 +36,7 @@ void Bob::draw(sf::RenderWindow &wnd, World& world)
     wnd.draw(img);
 }
 
-Pendulum::Pendulum(World& world, float length, float mass, sf::Vector2f bobPos, SolutionMethod method, sf::Color bobC)
+Pendulum::Pendulum(World& world, float length, float mass, sf::Vector2f bobPos, Physics::SolutionMethod method, sf::Color bobC)
     : bob(mass, bobPos, bobC), method(method), L(length)
 {
     rod.setSize({ 1.f,length });

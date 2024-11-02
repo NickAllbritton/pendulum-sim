@@ -37,17 +37,17 @@ void Button::setText(std::string t)
     text.setString(t);
 }
 
-SolutionMethod Button::click()
+Physics::SolutionMethod Button::click()
 {
     // toggle state
     state = !state;
     
     // return information about which button was pressed
-    if(text.getString() == "Small angle") return SolutionMethod::SmallAngle;
-    else if(text.getString() == "Euler method") return SolutionMethod::Euler;
-    else if(text.getString() == "Euler-Cromer method") return SolutionMethod::EulerCromer;
-    else if(text.getString() == "Runge-Kutta method") return SolutionMethod::RungeKutta;
-    else return SolutionMethod::NULLMethod;
+    if(text.getString() == "Small angle") return Physics::SolutionMethod::SmallAngle;
+    else if(text.getString() == "Euler method") return Physics::SolutionMethod::Euler;
+    else if(text.getString() == "Euler-Cromer method") return Physics::SolutionMethod::EulerCromer;
+    else if(text.getString() == "Runge-Kutta method") return Physics::SolutionMethod::RungeKutta;
+    else return Physics::SolutionMethod::NULLMethod;
 }
 
 bool Button::mouseClickWithinBounds(sf::Vector2f mPos)

@@ -22,7 +22,7 @@ public:
     Menu() = delete;
     ~Menu() = default;
     void draw(); // draw the title and program options
-    SolutionMethod clickAction(sf::Vector2f mPos); // if there is a click event call this method
+    Physics::SolutionMethod clickAction(sf::Vector2f mPos); // if there is a click event call this method
     MenuOptions clickNULLMethod(sf::Vector2f mPos); // if the click was determined to not be a method action
 private:
     sf::RenderWindow& wnd; // reference to the window object

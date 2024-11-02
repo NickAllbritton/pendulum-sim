@@ -14,8 +14,8 @@ public:
     Simulation() = delete; // default constructor should NOT be defined
     ~Simulation() = default; // default destructor is fine
     void run(); // run the simulation
-    void addSystem(SolutionMethod method);
-    void removeSystem(SolutionMethod method); 
+    void addSystem(Physics::SolutionMethod method);
+    void removeSystem(Physics::SolutionMethod method); 
 
 private:
     void events(); // handle events

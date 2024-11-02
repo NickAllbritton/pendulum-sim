@@ -3,12 +3,11 @@
 Simulation::Simulation(sf::RenderWindow &window)
     : wnd(window), 
     width(window.getSize().x), height(window.getSize().y),
-    menu(window), world(window, wnd.getSize().y * .45f, 1.f)
+    menu(window), world(window, wnd.getSize().y * .5f, 1.f)
 {
-    L = wnd.getSize().y * .45f;
+    L = wnd.getSize().y * .5f;
     m = 1.f;
     t = 0.f;
-    dt = 0.001f;
     play = false;
     initialAngle = M_PI / 4.f;
     ft = FrameTimer();
@@ -31,12 +30,12 @@ void Simulation::run()
     wnd.display(); // display the window
 }
 
-void Simulation::addSystem(SolutionMethod method)
+void Simulation::addSystem(Physics::SolutionMethod method)
 {
     systems.push_back(Pendulum(world, L, m, sf::Vector2f{L, M_PI / 4.f}, method, sf::Color::Cyan));
 }
 
-void Simulation::removeSystem(SolutionMethod method)
+void Simulation::removeSystem(Physics::SolutionMethod method)
 {
     int index_remove;
     // find the index of the system to remove
@@ -69,9 +68,9 @@ void Simulation::events()
                 if(event.key.code == sf::Keyboard::Q) wnd.close(); // press q to close the window
                 break;
             case sf::Event::MouseButtonPressed:
-                SolutionMethod method = 
+                Physics::SolutionMethod method = 
                     menu.clickAction(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)); // check if the mouse click hit a button
-                if(method != SolutionMethod::NULLMethod)
+                if(method != Physics::SolutionMethod::NULLMethod)
                 {
                     bool systemCreated = false; // is the system already created
                     for(auto& system : systems)
@@ -106,19 +105,19 @@ void Simulation::update()
     {
         for(auto& sys : systems)
         {
-            if(sys.method == SolutionMethod::SmallAngle)
+            if(sys.method == Physics::SolutionMethod::SmallAngle)
             {
-                sys.setBobPos(smallAngle(t, sys.getBobPos().x, initialAngle));
+                sys.setBobPos(Physics::smallAngle(t, sys.getBobPos().x, initialAngle));
             }
-            else if(sys.method == SolutionMethod::Euler)
+            else if(sys.method == Physics::SolutionMethod::Euler)
             {
                 // approximate the system using Euler method
             }
-            else if(sys.method == SolutionMethod::EulerCromer)
+            else if(sys.method == Physics::SolutionMethod::EulerCromer)
             {
                 // approximate the system using Euler-Cromer method
             }
-            else if(sys.method == SolutionMethod::RungeKutta)
+            else if(sys.method == Physics::SolutionMethod::RungeKutta)
             {
                 // approximate the system using Runge-Kutta method
             }

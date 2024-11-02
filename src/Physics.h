@@ -4,15 +4,25 @@
 #include <math.h>
 #include <SFML/Graphics.hpp>
 
-enum class SolutionMethod
+namespace Physics
 {
-    NULLMethod,
-    SmallAngle,
-    Euler,
-    EulerCromer,
-    RungeKutta
-};
 
-sf::Vector2f smallAngle(float time, float L, float theta_i);
+    // TODO: Make g dependent on L so that the value is more physical
+    // if that is even possible
+    // For now, g is hardcoded to a nice value that looks like a real pendulum.
+    constexpr float g = 150.f;
+
+    enum class SolutionMethod
+    {
+        NULLMethod,
+        SmallAngle,
+        Euler,
+        EulerCromer,
+        RungeKutta
+    };
+
+    sf::Vector2f smallAngle(float time, float L, float theta_i);
+
+}
 
 #endif

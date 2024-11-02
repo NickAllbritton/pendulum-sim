@@ -63,7 +63,7 @@ void Menu::draw()
     }
 }
 
-SolutionMethod Menu::clickAction(sf::Vector2f mPos)
+Physics::SolutionMethod Menu::clickAction(sf::Vector2f mPos)
 {
     for(Button& b : menuOptions)
     {
@@ -72,7 +72,7 @@ SolutionMethod Menu::clickAction(sf::Vector2f mPos)
             return b.click();
         }
     }
-    return SolutionMethod::NULLMethod;
+    return Physics::SolutionMethod::NULLMethod;
 }
 
 MenuOptions Menu::clickNULLMethod(sf::Vector2f mPos)

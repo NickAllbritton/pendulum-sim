@@ -20,7 +20,7 @@ public:
     {
         return text.getString();
     }
-    SolutionMethod click();
+    Physics::SolutionMethod click();
     bool mouseClickWithinBounds(sf::Vector2f pos);
 public:
     sf::Vector2f pos; // position of top left corner of the button's hitbox
