@@ -85,14 +85,22 @@ void Simulation::events()
                 }
                 else
                 {
-                    MenuOptions action = menu.clickNULLMethod(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
-                    if(action == MenuOptions::PlayPause)
+                    // first check if click was within the world
+                    if(world.withinWorld(sf::Vector2f{event.mouseButton.x, event.mouseButton.y}))
                     {
-                        play = !play;
+                        play = !play; // test code for the withinWorld function
                     }
                     else
                     {
-                        //TODO: Display about page.... 
+                        MenuOptions action = menu.clickNULLMethod(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
+                        if(action == MenuOptions::PlayPause)
+                        {
+                            play = !play;
+                        }
+                        else
+                        {
+                            //TODO: Display about page.... 
+                        }
                     }
                 }
                 break;

@@ -14,6 +14,7 @@ public:
     // World = delete; // once the constructor is written delete the default constructor
     ~World() = default;
     void draw(sf::RenderWindow& wnd); // draw the world
+    bool withinWorld(sf::Vector2f globalPos) const;
     // allow outside functions to use a world object to define their drawable's positions
     static sf::Vector2f ScreenPos(World& world, sf::Vector2f worldPos)
     {
@@ -28,7 +29,7 @@ private:
         // Following the simplest convention in mechanics we set the origin of our world coordinates to the point of
         // minimum potential energy
         sf::Vector2f origin(background.getGlobalBounds().getPosition().x + width / 2.f,
-                            background.getGlobalBounds().getPosition().y + 1.4f*L);
+                            background.getGlobalBounds().getPosition().y + height - 0.2f*L);
         return origin + sf::Vector2f{worldPos.x, -worldPos.y}; // minus the y because negative y-values in screen space mean moving up
     }
 private:
