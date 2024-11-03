@@ -127,7 +127,11 @@ void Simulation::removeSystem(Physics::SolutionMethod method)
         {
             temp_sys.push_back(systems.at(i));
             temp_colors.push_back(colors.at(i));
-            temp_indicators.push_back(indicators.at(i));
+            if(i > index_remove) 
+                temp_indicators.push_back(Indicator(wnd, world.nexaLight, indicators.at(i).getMethod(), 
+                                            returnSystemColor(colors.at(i)), i - 1));
+            else temp_indicators.push_back(Indicator(wnd, world.nexaLight, indicators.at(i).getMethod(), returnSystemColor(colors.at(i)), i));
+
         }
     }
     systems.clear();

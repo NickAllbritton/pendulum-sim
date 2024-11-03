@@ -2,6 +2,8 @@
 
 Indicator::Indicator(sf::RenderWindow& wnd, sf::Font& font, Physics::SolutionMethod method, sf::Color color, int index)
 {
+    this->method = method;
+
     background.setOutlineThickness(2.f); // thick border
     background.setOutlineColor(color);
     background.setFillColor(sf::Color::Transparent);

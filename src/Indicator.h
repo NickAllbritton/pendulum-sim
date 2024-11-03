@@ -10,9 +10,14 @@ public:
     Indicator(sf::RenderWindow& wnd, sf::Font& font, Physics::SolutionMethod method, sf::Color color, int index);
     Indicator() = default;
     void draw(sf::RenderWindow& wnd);
+    Physics::SolutionMethod getMethod() const
+    {
+        return method;
+    }
 private:
     sf::RectangleShape background;
     sf::Text text;
+    Physics::SolutionMethod method;
 };
 
 #endif
