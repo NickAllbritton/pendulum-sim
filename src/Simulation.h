@@ -36,7 +36,9 @@ private:
     // system variables
     float L; // length of the rod
     float m; // mass of the bob
+    bool initial; // true if all systems are ready to evolve from the same rest state or new systems added 
     bool play; // is time evolving
+    bool bobRepositioning; // is the bob being moved by the mouse
     float initialAngle;
     FrameTimer ft; // object to calculate the time of a frame so that times are consistent
     float t; // the newtonian universal time

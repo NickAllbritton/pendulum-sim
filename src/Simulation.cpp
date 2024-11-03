@@ -9,7 +9,9 @@ Simulation::Simulation(sf::RenderWindow &window)
     m = 1.f;
     t = 0.f;
     play = false;
-    initialAngle = 8.f * M_PI / 15.f;
+    bobRepositioning = false;
+    initial = true;
+    initialAngle = 0.f;
     ft = FrameTimer();
 
     systems = std::vector<Pendulum>(0);
@@ -70,9 +72,40 @@ void Simulation::events()
             case sf::Event::KeyPressed:
                 if(event.key.code == sf::Keyboard::Q) wnd.close(); // press q to close the window
                 break;
+            case sf::Event::MouseButtonReleased:
+                if(bobRepositioning) 
+                {
+                    bobRepositioning = false;
+                    for(auto& sys : systems)
+                    {
+                        // save the mouse position in world coordinates (cartesian)
+                        auto mousePos = World::WorldPos(world, sf::Vector2f{(float)event.mouseButton.x, (float)event.mouseButton.y});
+                        // find the difference vector between mousePos and (0, L) (polar origin)
+                        auto diff = mousePos - sf::Vector2f{0, L};
+                        // calculate the angle of this vector using trig
+                        // NOTE: x and y are swapped due to x being the opposite side length
+                        // and that y is negated because the resulting trig is upside down of 
+                        // standard trig as it is expected by devs who wrote std::atan, for example
+                        // if the release position is above the origin of the polar system (0, L)
+                        // the subtraction of the cartesian origin does not create an upside down triangle
+                        // the negation of the y coordinate thus has the effect of swinging the angle around
+                        // by pi. adding another pi puts it in the correct place, if so
+                        float angle = (mousePos.y >= L) ? std::atan(diff.x / -diff.y) + M_PI : std::atan(diff.x / -diff.y);
+                        sys.setBobPos(sf::Vector2f{L, angle});
+
+                        // reset initial conditions relevant for accurate physics
+                        sys.setBobVel(sf::Vector2f{0.f, 0.f}); 
+                        initialAngle = angle;
+                        t = 0;
+                    }
+                }
+                break;
             case sf::Event::MouseButtonPressed:
+                // TODO: indicate that the system is not in an initial state so that the user isn't confused 
+                // that adding new pendulums does nothing besides change the color of the menu button clicked
+                // Due to the structure of the program, I'm not sure how to do that right now
                 Physics::SolutionMethod method = 
-                    menu.clickAction(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)); // check if the mouse click hit a button
+                    menu.clickAction(sf::Vector2f((float)event.mouseButton.x, (float)event.mouseButton.y)); // check if the mouse click hit a button
                 if(method != Physics::SolutionMethod::NULLMethod)
                 {
                     bool systemCreated = false; // is the system already created
@@ -81,16 +114,23 @@ void Simulation::events()
                         if(system.method == method) systemCreated = true;
                     }
                     if(systemCreated) removeSystem(method);
-                    else addSystem(method, sf::Vector2f{L, initialAngle});
+                    else if(initial) addSystem(method, sf::Vector2f{L, initialAngle});
                 }
                 else
                 {
                     // first check if click was within the world
-                    if(world.withinWorld(sf::Vector2f{event.mouseButton.x, event.mouseButton.y}))
+                    if(world.withinWorld(sf::Vector2f{(float)event.mouseButton.x, (float)event.mouseButton.y}))
                     {
-                        play = !play; // test code for the withinWorld function
+                        for(auto& sys : systems)
+                        {
+                            if(sys.onBob(World::WorldPos(world, sf::Vector2f{(float)event.mouseButton.x, (float)event.mouseButton.y})))
+                            {
+                                // set the bobRepositioning state true
+                                bobRepositioning = true;
+                            }
+                        }
                     }
-                    else
+                    else // if it is not then evaluate whether a menu button was clicked
                     {
                         MenuOptions action = menu.clickNULLMethod(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
                         if(action == MenuOptions::PlayPause)
@@ -113,7 +153,16 @@ void Simulation::update()
     dt = ft.frame(); // calculate the time between frames
     dt = play ? dt : 0.f; // if the sim is not in play, set dt to 0
 
-    if(systems.size() != 0)
+    if(!play)
+    {
+        for(auto& sys : systems)
+        {
+            // check that each system is still in the initial state
+            if(sys.getBobPos().y != initialAngle) initial = false; 
+        }
+    }
+
+    if(play && !bobRepositioning && systems.size() != 0) //evolve the system
     {
         for(auto& sys : systems)
         {
@@ -137,9 +186,8 @@ void Simulation::update()
                 // approximate the system using Runge-Kutta method
             }
         }
+        t += dt;
     }
-
-    if(play) t += dt; // update the time if the game is in play
 }
 
 void Simulation::draw()

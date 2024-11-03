@@ -20,6 +20,10 @@ public:
     {
         return world.screenPos(worldPos);
     }
+    static sf::Vector2f WorldPos(World& world, sf::Vector2f screenPos)
+    {
+        return world.worldPos(screenPos);
+    }
 private:
     // TODO: alternative to this solution use a sf::View to handle world coordinates
     // return the screen position of every position in the world coordinates
@@ -31,6 +35,12 @@ private:
         sf::Vector2f origin(background.getGlobalBounds().getPosition().x + width / 2.f,
                             background.getGlobalBounds().getPosition().y + height - 0.2f*L);
         return origin + sf::Vector2f{worldPos.x, -worldPos.y}; // minus the y because negative y-values in screen space mean moving up
+    }
+    sf::Vector2f worldPos(sf::Vector2f screenPos) const
+    {
+        sf::Vector2f worldOrigin(background.getGlobalBounds().getPosition().x + width / 2.f,
+                            background.getGlobalBounds().getPosition().y + height - 0.2f*L);
+        return sf::Vector2f{(screenPos - worldOrigin).x, -(screenPos - worldOrigin).y};
     }
 private:
     sf::RectangleShape background;

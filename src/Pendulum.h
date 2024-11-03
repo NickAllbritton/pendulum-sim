@@ -5,6 +5,8 @@
 #ifndef PENDULUM_H
 #define PENDULUM_H
 
+sf::Vector2f polarPos(const sf::Vector2f& rect);
+sf::Vector2f rectPos(const sf::Vector2f& polar);
 
 // not a dude. it's what you call the ball at the tip of the pendulum
 class Bob
@@ -21,6 +23,10 @@ public:
     const sf::Vector2f& setPos(const sf::Vector2f& newPos)
     {
         return pos = newPos;
+    }
+    const float getRadius() const
+    {
+        return r;
     }
     const sf::Vector2f getVel() const
     {
@@ -45,6 +51,7 @@ public:
     Pendulum() = default;
     ~Pendulum() = default;
     void draw(sf::RenderWindow& wnd, World& world);
+    bool onBob(sf::Vector2f mousePos);
     const sf::Vector2f getBobPos() const
     {
         return bob.getPos();
