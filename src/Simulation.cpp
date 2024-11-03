@@ -153,11 +153,11 @@ void Simulation::update()
     dt = ft.frame(); // calculate the time between frames
     dt = play ? dt : 0.f; // if the sim is not in play, set dt to 0
 
-    if(!play)
+    if(systems.size() != 0)
     {
         for(auto& sys : systems)
         {
-            // check that each system is still in the initial state
+            // check if any system is not in the initial state
             if(sys.getBobPos().y != initialAngle) initial = false; 
         }
     }
