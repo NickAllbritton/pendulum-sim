@@ -1,4 +1,5 @@
 #include "Simulation.h"
+#include <random>
 
 MenuOptions MenuOptionFromMethod(Physics::SolutionMethod meth)
 {
@@ -16,6 +17,44 @@ MenuOptions MenuOptionFromMethod(Physics::SolutionMethod meth)
         case Physics::SolutionMethod::NULLMethod:
             return MenuOptions::Reset;
     }
+}
+
+enum class SystemColors
+{
+    OceanBlue,
+    HotPink,
+    ForestGreen,
+    BloodRed,
+    DeepPurple,
+    VibrantYellow
+};
+
+sf::Color returnSystemColor(SystemColors color)
+{
+    switch(color)
+    {
+        case SystemColors::OceanBlue:
+            return sf::Color(0, 0, 0);
+        case SystemColors::HotPink:
+            return sf::Color(0, 0, 0);
+        case SystemColors::ForestGreen:
+            return sf::Color(0, 0, 0);
+        case SystemColors::BloodRed:
+            return sf::Color(0, 0, 0);
+        case SystemColors::DeepPurple:
+            return sf::Color(0, 0, 0);
+        case SystemColors::VibrantYellow:
+            return sf::Color(0, 0, 0);
+    };
+}
+
+sf::Color randomColor()
+{
+    std::random_device dev; // seed for mersenne twister algorithm
+    std::mt19937 rng( dev() );
+    std::uniform_int_distribution<> dist(0, 5);
+    int rand_color = dist(rng);
+    return returnSystemColor(static_cast<SystemColors>(rand_color));
 }
 
 Simulation::Simulation(sf::RenderWindow &window)
@@ -50,7 +89,7 @@ void Simulation::run()
     wnd.display(); // display the window
 }
 
-void Simulation::addSystem(Physics::SolutionMethod method, sf::Vector2f pos)
+void Simulation::addSystem(Physics::SolutionMethod method, sf::Vector2f pos, sf::Color randomColor)
 {
     systems.push_back(Pendulum(world, L, m, pos, method, sf::Color::Cyan));
 }
@@ -139,7 +178,7 @@ void Simulation::events()
                         if(system.method == method) systemCreated = true;
                     }
                     if(systemCreated) removeSystem(method);
-                    else if(initial) addSystem(method, sf::Vector2f{L, initialAngle});
+                    else if(initial) addSystem(method, sf::Vector2f{L, initialAngle}, randomColor());
                     // if a new system was attempted to be created in a non-initial system, do not allow it
                     else menu.simulateClick(MenuOptionFromMethod(method));
                 }
