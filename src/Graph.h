@@ -22,13 +22,16 @@ public:
         background.setPosition(pos);
     }
 private:
-    sf::Vector2f GraphCoordinates(sf::Vector2f screenPos);
+    sf::Vector2f ScreenCoordinates(sf::Vector2f graphPos);
 
 private:
+    sf::Vector2f origin;
     sf::RectangleShape background;
     std::vector<sf::CircleShape> points;
     sf::Font nexa_light;
-    std::pair<sf::Text,
+    std::pair<sf::Text, sf::Text> axisLabels;
+    std::pair<sf::RectangleShape, sf::RectangleShape> axes;
+    std::vector<sf::Text> tickLabels;
 };
 
 #endif
