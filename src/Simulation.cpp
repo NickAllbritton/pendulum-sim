@@ -3,9 +3,9 @@
 Simulation::Simulation(sf::RenderWindow &window)
     : wnd(window), 
     width(window.getSize().x), height(window.getSize().y),
-    menu(window), world(window, wnd.getSize().y * .5f, 1.f)
+    menu(window), world(window, wnd.getSize().y * .28f, 1.f)
 {
-    L = wnd.getSize().y * .5f;
+    L = wnd.getSize().y * .28f;
     m = 1.f;
     t = 0.f;
     play = false;

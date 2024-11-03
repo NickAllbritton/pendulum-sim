@@ -160,7 +160,7 @@ World::World(sf::RenderWindow& wnd, float L, float mass)
         // this ensures that you do not draw a tick label on the origin
         if(pos.y >= -1.f && pos.y < L) 
         {
-            pos += { 0.f,-L }; // increment the pos as usual
+            pos += { 0.f, L }; // increment the pos as usual
             i--; // decrease the index counter
             continue; // move on
         }
@@ -175,7 +175,7 @@ World::World(sf::RenderWindow& wnd, float L, float mass)
         tick_ylabels.at(i).setString(numString);
         // center the label with the tick
         tick_ylabels.at(i).setPosition(screenPos(pos) - sf::Vector2f{ 0.f , tick_ylabels.at(i).getLocalBounds().getSize().y / 2.f});
-        pos += { 0.f, -L }; // shift the position to the next value
+        pos += { 0.f, L }; // shift the position to the next value
     }
 
     /******************************************************************************************/
