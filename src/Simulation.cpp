@@ -17,6 +17,7 @@ MenuOptions MenuOptionFromMethod(Physics::SolutionMethod meth)
         case Physics::SolutionMethod::NULLMethod:
             return MenuOptions::Reset;
     }
+    return MenuOptions::Reset; // this line will not be reached but shuts up compiler warning
 }
 
 sf::Color returnSystemColor(SystemColors color)
@@ -35,7 +36,8 @@ sf::Color returnSystemColor(SystemColors color)
             return sf::Color(101, 17, 114);
         case SystemColors::VibrantYellow:
             return sf::Color(244, 226, 0);
-    };
+    }
+    return sf::Color(0, 0, 0); // this line will never be reached but shuts up annoying warning
 }
 
 Simulation::Simulation(sf::RenderWindow &window)
@@ -49,6 +51,7 @@ Simulation::Simulation(sf::RenderWindow &window)
     play = false;
     bobRepositioning = false;
     initial = true;
+    clickRemovedSystem = false;
     initialAngle = 0.f;
     ft = FrameTimer();
 
@@ -61,12 +64,19 @@ sf::Color Simulation::randomColor()
     std::random_device dev; // seed for mersenne twister algorithm
     std::mt19937 rng( dev() );
     std::uniform_int_distribution<> dist(0, 5);
-    int rand_color = dist(rng);
+    int rand_color;
+    bool noMatch;
 
-    for(auto& color : colors)
+    do
     {
-        if(static_cast<SystemColors>(rand_color) == color) rand_color = dist(rng);
-    }
+        rand_color = dist(rng); // generate random int [0, 5]
+        noMatch = true; // initially there is no match, of course
+        for(auto& color : colors)
+        {
+            // if a color is matched, noMatch is false
+            if(static_cast<SystemColors>(rand_color) == color) noMatch = false;
+        }
+    } while (!noMatch); // if there was a match, loop again
     
     colors.push_back(static_cast<SystemColors>(rand_color));
 
@@ -104,15 +114,22 @@ void Simulation::removeSystem(Physics::SolutionMethod method)
     {
         if(systems.at(i).method == method) index_remove = i;
     }
-    // create new vector to copy all but system to remove into
+    // create new vector to copy all but system/color to remove into
     std::vector<Pendulum> temp_sys = std::vector<Pendulum>(0);
+    std::vector<SystemColors> temp_colors = std::vector<SystemColors>(0);
     for(int i = 0; i < systems.size(); i++)
     {
         if(i == index_remove) continue;
-        else temp_sys.push_back(systems.at(i));
+        else 
+        {
+            temp_sys.push_back(systems.at(i));
+            temp_colors.push_back(colors.at(i));
+        }
     }
     systems.clear();
+    colors.clear();
     systems = temp_sys;
+    colors = temp_colors;
 }
 
 void Simulation::events()
@@ -158,13 +175,32 @@ void Simulation::events()
                 else
                 {
                     // determine what button the mouse is hovering over when button released
-                    MenuOptions action = menu.clickNULLMethod(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
-                    // if the initial click was on "Reset"
-                    if(action == MenuOptions::Reset)
+                    MenuOptions action = menu.clickNULLMethod(sf::Vector2f((float)event.mouseButton.x, (float)event.mouseButton.y));
+                    // if the initial click was over button that needs to be unclicked then simulate a click
+                    if(action == MenuOptions::Reset) menu.simulateClick(action); // click reset back
+                    else // click buttons for solution methods back (if attempt to create in noninitial state)
                     {
-                        menu.simulateClick(MenuOptions::Reset); // change the color back when mouse button is released
+                        for(int i = 1; i < 5; i++)
+                        {
+                            // if the action matches a solution method and the system is non-initial
+                            if(action == MenuOptionFromMethod(static_cast<Physics::SolutionMethod>(i)) && !initial) 
+                            {
+                                bool match = false; // is there a match
+                                for(auto& sys : systems)
+                                {
+                                    // if you find a match, match is true
+                                    if(sys.method == static_cast<Physics::SolutionMethod>(i)) match = true;
+                                }
+                                // if there is no system, undo the click
+                                // because if the button is clicked for a system that has not been made yet
+                                // and the state of the sim is non-initial, the button should not stay highlighted
+                                if(!match && !clickRemovedSystem) menu.simulateClick(action); 
+                                i = 4; // exit loop
+                            }
+                        }
                     }
                 }
+                if(clickRemovedSystem) clickRemovedSystem = false; // reset 
                 break;
             case sf::Event::MouseButtonPressed:
                 Physics::SolutionMethod method = 
@@ -176,10 +212,12 @@ void Simulation::events()
                     {
                         if(system.method == method) systemCreated = true;
                     }
-                    if(systemCreated) removeSystem(method);
+                    if(systemCreated) 
+                    {
+                        removeSystem(method);
+                        clickRemovedSystem = true;
+                    }
                     else if(initial) addSystem(method, sf::Vector2f{L, initialAngle}, randomColor());
-                    // if a new system was attempted to be created in a non-initial system, do not allow it
-                    else menu.simulateClick(MenuOptionFromMethod(method));
                 }
                 else
                 {
@@ -203,9 +241,8 @@ void Simulation::events()
                             // toggle play
                             play = !play;
                         }
-                        else
+                        else if(action == MenuOptions::Reset)
                         {
-                            // only other option is reset button
                             // put the sim back into an initial state with all the systems still included
                             if(play)
                             {
