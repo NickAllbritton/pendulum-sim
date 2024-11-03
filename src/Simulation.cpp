@@ -45,6 +45,8 @@ Simulation::Simulation(sf::RenderWindow &window)
     width(window.getSize().x), height(window.getSize().y),
     menu(window), world(window, wnd.getSize().y * .29f, 1.f)
 {
+    
+    nexa_h.loadFromFile("./resources/Nexa-Heavy.ttf");
     L = wnd.getSize().y * .29f;
     m = 1.f;
     t = 0.f;
@@ -102,7 +104,7 @@ void Simulation::run()
 void Simulation::addSystem(Physics::SolutionMethod method, sf::Vector2f pos, sf::Color randColor)
 {
     systems.push_back(Pendulum(world, L, m, pos, method, randColor));
-    indicators.push_back(Indicator(wnd, world.nexaLight, method, randColor, systems.size() - 1));
+    indicators.push_back(Indicator(wnd, nexa_h, method, randColor, systems.size() - 1));
 }
 
 void Simulation::removeSystem(Physics::SolutionMethod method)
@@ -128,9 +130,8 @@ void Simulation::removeSystem(Physics::SolutionMethod method)
             temp_sys.push_back(systems.at(i));
             temp_colors.push_back(colors.at(i));
             if(i > index_remove) 
-                temp_indicators.push_back(Indicator(wnd, world.nexaLight, indicators.at(i).getMethod(), 
-                                            returnSystemColor(colors.at(i)), i - 1));
-            else temp_indicators.push_back(Indicator(wnd, world.nexaLight, indicators.at(i).getMethod(), returnSystemColor(colors.at(i)), i));
+                temp_indicators.push_back(Indicator(wnd, nexa_h,indicators.at(i).getMethod(), returnSystemColor(colors.at(i)), i - 1));
+            else temp_indicators.push_back(Indicator(wnd, nexa_h,indicators.at(i).getMethod(), returnSystemColor(colors.at(i)), i));
 
         }
     }

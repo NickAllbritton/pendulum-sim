@@ -1,6 +1,6 @@
 #include "Indicator.h"
 
-Indicator::Indicator(sf::RenderWindow& wnd, sf::Font& font, Physics::SolutionMethod method, sf::Color color, int index)
+Indicator::Indicator(sf::RenderWindow& wnd, sf::Font& nexa_h, Physics::SolutionMethod method, sf::Color color, int index)
 {
     this->method = method;
 
@@ -14,7 +14,7 @@ Indicator::Indicator(sf::RenderWindow& wnd, sf::Font& font, Physics::SolutionMet
 
     background.setPosition(pos);
 
-    text.setFont(font);
+    text.setFont(nexa_h);
     text.setCharacterSize(background.getSize().y * 0.5f); // 50% of background
     text.setFillColor(color);
     text.setStyle(sf::Text::Bold);

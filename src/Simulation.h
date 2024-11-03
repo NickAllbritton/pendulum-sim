@@ -40,6 +40,7 @@ public:
     float height;
 private:
     sf::RenderWindow& wnd; // the simulation object owns a reference to the window handle
+    sf::Font nexa_h;
     Menu menu;
     World world; // contains all the objects for the physics and logic
     std::vector<Pendulum> systems;  // a dynamic array of pendulum systems that will each have different solving methods

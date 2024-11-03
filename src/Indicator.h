@@ -7,7 +7,7 @@
 class Indicator
 {
 public:
-    Indicator(sf::RenderWindow& wnd, sf::Font& font, Physics::SolutionMethod method, sf::Color color, int index);
+    Indicator(sf::RenderWindow& wnd, sf::Font& nexa_h, Physics::SolutionMethod method, sf::Color color, int index);
     Indicator() = default;
     void draw(sf::RenderWindow& wnd);
     Physics::SolutionMethod getMethod() const
