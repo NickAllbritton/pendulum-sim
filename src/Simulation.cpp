@@ -43,9 +43,9 @@ sf::Color returnSystemColor(SystemColors color)
 Simulation::Simulation(sf::RenderWindow &window)
     : wnd(window), 
     width(window.getSize().x), height(window.getSize().y),
-    menu(window), world(window, wnd.getSize().y * .29f, 1.f)
+    menu(window), world(window, wnd.getSize().y * .29f, 1.f), 
+    graph(wnd, {0.f, 0.f}, {0.f, 0.f})
 {
-    
     nexa_h.loadFromFile("./resources/Nexa-Heavy.ttf");
     L = wnd.getSize().y * .29f;
     m = 1.f;
@@ -88,17 +88,18 @@ sf::Color Simulation::randomColor()
 
 void Simulation::run()
 {
+    // clear the screen from previous frame's drawing
+    wnd.clear(sf::Color(32, 27, 32)); // background is a deep grey
+
+    // draw the system
+    draw();
+    wnd.display(); // display the window
+
     // first check for window events to handle
     events();
 
     // next update the system
     update();
-
-    // clear the screen from previous frame's drawing
-    wnd.clear(sf::Color(32, 27, 32)); // background is a deep grey
-    // draw the system
-    draw();
-    wnd.display(); // display the window
 }
 
 void Simulation::addSystem(Physics::SolutionMethod method, sf::Vector2f pos, sf::Color randColor)
@@ -333,4 +334,8 @@ void Simulation::draw()
             indic.draw(wnd);
         }
     }
+    
+    graph.setSize({wnd.getSize().x - wnd.getSize().y*0.20f - menu.getTitleSize().x, menu.getTitleSize().y});
+    graph.setPos({(float)wnd.getSize().x - graph.getSize().x - wnd.getSize().y * 0.05f, wnd.getSize().y * 0.05f});
+    graph.draw(wnd);
 }

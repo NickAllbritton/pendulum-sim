@@ -4,6 +4,7 @@
 #include "Pendulum.h"
 #include "FrameTimer.h"
 #include "Indicator.h"
+#include "Graph.h"
 
 #ifndef SIMULATION_H
 #define SIMULATION_H
@@ -43,6 +44,7 @@ private:
     sf::Font nexa_h;
     Menu menu;
     World world; // contains all the objects for the physics and logic
+    Graph graph;
     std::vector<Pendulum> systems;  // a dynamic array of pendulum systems that will each have different solving methods
     std::vector<SystemColors> colors;
     std::vector<Indicator> indicators;
