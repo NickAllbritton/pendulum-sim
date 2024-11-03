@@ -7,6 +7,17 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
+
+enum class SystemColors
+{
+    OceanBlue,
+    HotPink,
+    ForestGreen,
+    BloodRed,
+    DeepPurple,
+    VibrantYellow
+};
+
 class Simulation
 {
 public:
@@ -16,6 +27,7 @@ public:
     void run(); // run the simulation
     void addSystem(Physics::SolutionMethod method, sf::Vector2f pos, sf::Color randomColor);
     void removeSystem(Physics::SolutionMethod method); 
+    sf::Color randomColor();
 
 private:
     void events(); // handle events
@@ -32,6 +44,7 @@ private:
     sf::Text clicked;
     sf::Font font;
     std::vector<Pendulum> systems;  // a dynamic array of pendulum systems that will each have different solving methods
+    std::vector<SystemColors> colors;
 
     // system variables
     float L; // length of the rod

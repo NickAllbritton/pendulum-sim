@@ -19,42 +19,23 @@ MenuOptions MenuOptionFromMethod(Physics::SolutionMethod meth)
     }
 }
 
-enum class SystemColors
-{
-    OceanBlue,
-    HotPink,
-    ForestGreen,
-    BloodRed,
-    DeepPurple,
-    VibrantYellow
-};
-
 sf::Color returnSystemColor(SystemColors color)
 {
     switch(color)
     {
         case SystemColors::OceanBlue:
-            return sf::Color(0, 0, 0);
+            return sf::Color(7, 31, 215);
         case SystemColors::HotPink:
-            return sf::Color(0, 0, 0);
+            return sf::Color(255, 23, 91);
         case SystemColors::ForestGreen:
-            return sf::Color(0, 0, 0);
+            return sf::Color(15, 123, 21);
         case SystemColors::BloodRed:
-            return sf::Color(0, 0, 0);
+            return sf::Color(249, 14, 13);
         case SystemColors::DeepPurple:
-            return sf::Color(0, 0, 0);
+            return sf::Color(101, 17, 114);
         case SystemColors::VibrantYellow:
-            return sf::Color(0, 0, 0);
+            return sf::Color(244, 226, 0);
     };
-}
-
-sf::Color randomColor()
-{
-    std::random_device dev; // seed for mersenne twister algorithm
-    std::mt19937 rng( dev() );
-    std::uniform_int_distribution<> dist(0, 5);
-    int rand_color = dist(rng);
-    return returnSystemColor(static_cast<SystemColors>(rand_color));
 }
 
 Simulation::Simulation(sf::RenderWindow &window)
@@ -72,6 +53,24 @@ Simulation::Simulation(sf::RenderWindow &window)
     ft = FrameTimer();
 
     systems = std::vector<Pendulum>(0);
+    colors = std::vector<SystemColors>(0);
+}
+
+sf::Color Simulation::randomColor()
+{
+    std::random_device dev; // seed for mersenne twister algorithm
+    std::mt19937 rng( dev() );
+    std::uniform_int_distribution<> dist(0, 5);
+    int rand_color = dist(rng);
+
+    for(auto& color : colors)
+    {
+        if(static_cast<SystemColors>(rand_color) == color) rand_color = dist(rng);
+    }
+    
+    colors.push_back(static_cast<SystemColors>(rand_color));
+
+    return returnSystemColor(static_cast<SystemColors>(rand_color));
 }
 
 void Simulation::run()
@@ -89,9 +88,9 @@ void Simulation::run()
     wnd.display(); // display the window
 }
 
-void Simulation::addSystem(Physics::SolutionMethod method, sf::Vector2f pos, sf::Color randomColor)
+void Simulation::addSystem(Physics::SolutionMethod method, sf::Vector2f pos, sf::Color randColor)
 {
-    systems.push_back(Pendulum(world, L, m, pos, method, sf::Color::Cyan));
+    systems.push_back(Pendulum(world, L, m, pos, method, randColor));
 }
 
 void Simulation::removeSystem(Physics::SolutionMethod method)
@@ -219,6 +218,7 @@ void Simulation::events()
                                 sys.setBobVel({0.f, 0.f});
                                 sys.setBobPos({L, 0.f});
                             }
+                            initialAngle = 0.f;
                             initial = true;
                         }
                     }
