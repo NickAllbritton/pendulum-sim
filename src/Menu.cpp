@@ -1,6 +1,37 @@
 #include "Menu.h"
 #include <iostream>
 
+std::string MenuButtonText(MenuOptions button)
+{
+    switch(button)
+    {
+        case MenuOptions::PlayPause:
+            return "Play";
+        case MenuOptions::SmallAngle:
+            return "Small angle";
+        case MenuOptions::Euler:
+            return "Euler method";
+        case MenuOptions::EulerCromer:
+            return "Euler-Cromer method";
+        case MenuOptions::RungeKutta:
+            return "Runge-Kutta method";
+        case MenuOptions::Reset:
+            return "Reset";
+        default:
+            return "ERROR";    
+    }
+}
+
+ MenuOptions MenuOptionFromText(std::string text)
+{
+    if(text == "Play") return MenuOptions::PlayPause;
+    else if(text == "Small angle") return MenuOptions::SmallAngle;
+    else if(text ==  "Euler method") return MenuOptions::Euler;
+    else if(text == "Euler-Cromer method") return MenuOptions::EulerCromer;
+    else if(text ==  "Runge-Kutta method") return MenuOptions::RungeKutta;
+    else if(text ==  "Reset") return MenuOptions::Reset;
+}
+
 Menu::Menu(sf::RenderWindow &wnd)
     : wnd(wnd)
 {
@@ -14,27 +45,7 @@ Menu::Menu(sf::RenderWindow &wnd)
         Button b;
 
         // use the loop as a means of setting the text properly to each button
-        switch(static_cast<MenuOptions>(i))
-        {
-            case MenuOptions::PlayPause:
-                b = Button(wnd, vanilla_rav, sf::Color(18, 188, 148), pos, "Play");
-                break;
-            case MenuOptions::SmallAngle:
-                b = Button(wnd, vanilla_rav, sf::Color(18, 188, 148), pos, "Small angle");
-                break;
-            case MenuOptions::Euler:
-                b = Button(wnd, vanilla_rav, sf::Color(18, 188, 148), pos, "Euler method");
-                break;
-            case MenuOptions::EulerCromer:
-                b = Button(wnd, vanilla_rav, sf::Color(18, 188, 148), pos, "Euler-Cromer method");
-                break;
-            case MenuOptions::RungeKutta:
-                b = Button(wnd, vanilla_rav, sf::Color(18, 188, 148), pos, "Runge-Kutta method");
-                break;
-            case MenuOptions::About:
-                b = Button(wnd, vanilla_rav, sf::Color(18, 188, 148), pos, "About");
-                break;    
-        }
+        b = Button(wnd, vanilla_rav, sf::Color(18, 188, 148), pos, MenuButtonText(static_cast<MenuOptions>(i)));
         menuOptions.push_back(b);
     }
 }
@@ -75,14 +86,21 @@ Physics::SolutionMethod Menu::clickAction(sf::Vector2f mPos)
     return Physics::SolutionMethod::NULLMethod;
 }
 
+void Menu::simulateClick(MenuOptions button)
+{
+    for(Button& b : menuOptions)
+    {
+        if(b.getText() == MenuButtonText(button)) b.click();
+    }
+}
+
 MenuOptions Menu::clickNULLMethod(sf::Vector2f mPos)
 {
     for(Button& b : menuOptions)
     {
         if(b.mouseClickWithinBounds(mPos)) 
         {
-            if(b.getText() == "Play") return MenuOptions::PlayPause;
-            else return MenuOptions::About;
+            return MenuOptionFromText(b.getText());
         }
     }
 }

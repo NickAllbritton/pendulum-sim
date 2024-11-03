@@ -1,5 +1,23 @@
 #include "Simulation.h"
 
+MenuOptions MenuOptionFromMethod(Physics::SolutionMethod meth)
+{
+    switch(meth)
+    {
+        case Physics::SolutionMethod::SmallAngle:
+            return MenuOptions::SmallAngle;
+        case Physics::SolutionMethod::Euler:
+            return MenuOptions::Euler;
+        case Physics::SolutionMethod::EulerCromer:
+            return MenuOptions::EulerCromer;
+        case Physics::SolutionMethod::RungeKutta:
+            return MenuOptions::RungeKutta;
+        // this last case feels strange.... probably a way to make this more clean
+        case Physics::SolutionMethod::NULLMethod:
+            return MenuOptions::Reset;
+    }
+}
+
 Simulation::Simulation(sf::RenderWindow &window)
     : wnd(window), 
     width(window.getSize().x), height(window.getSize().y),
@@ -99,11 +117,18 @@ void Simulation::events()
                         t = 0;
                     }
                 }
+                else
+                {
+                    // determine what button the mouse is hovering over when button released
+                    MenuOptions action = menu.clickNULLMethod(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
+                    // if the initial click was on "Reset"
+                    if(action == MenuOptions::Reset)
+                    {
+                        menu.simulateClick(MenuOptions::Reset); // change the color back when mouse button is released
+                    }
+                }
                 break;
             case sf::Event::MouseButtonPressed:
-                // TODO: indicate that the system is not in an initial state so that the user isn't confused 
-                // that adding new pendulums does nothing besides change the color of the menu button clicked
-                // Due to the structure of the program, I'm not sure how to do that right now
                 Physics::SolutionMethod method = 
                     menu.clickAction(sf::Vector2f((float)event.mouseButton.x, (float)event.mouseButton.y)); // check if the mouse click hit a button
                 if(method != Physics::SolutionMethod::NULLMethod)
@@ -115,6 +140,8 @@ void Simulation::events()
                     }
                     if(systemCreated) removeSystem(method);
                     else if(initial) addSystem(method, sf::Vector2f{L, initialAngle});
+                    // if a new system was attempted to be created in a non-initial system, do not allow it
+                    else menu.simulateClick(MenuOptionFromMethod(method));
                 }
                 else
                 {
@@ -135,11 +162,25 @@ void Simulation::events()
                         MenuOptions action = menu.clickNULLMethod(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
                         if(action == MenuOptions::PlayPause)
                         {
+                            // toggle play
                             play = !play;
                         }
                         else
                         {
-                            //TODO: Display about page.... 
+                            // only other option is reset button
+                            // put the sim back into an initial state with all the systems still included
+                            if(play)
+                            {
+                                play = false;
+                                menu.simulateClick(MenuOptions::PlayPause);
+                            }
+                            t = 0;
+                            for(auto& sys : systems)
+                            {
+                                sys.setBobVel({0.f, 0.f});
+                                sys.setBobPos({L, 0.f});
+                            }
+                            initial = true;
                         }
                     }
                 }

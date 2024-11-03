@@ -12,7 +12,7 @@ enum class MenuOptions
     Euler,
     EulerCromer,
     RungeKutta,
-    About
+    Reset
 };
 
 class Menu
@@ -23,6 +23,7 @@ public:
     ~Menu() = default;
     void draw(); // draw the title and program options
     Physics::SolutionMethod clickAction(sf::Vector2f mPos); // if there is a click event call this method
+    void simulateClick(MenuOptions button); // simulate a click of a button
     MenuOptions clickNULLMethod(sf::Vector2f mPos); // if the click was determined to not be a method action
 private:
     sf::RenderWindow& wnd; // reference to the window object
