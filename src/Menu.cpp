@@ -35,8 +35,8 @@ std::string MenuButtonText(MenuOptions button)
 Menu::Menu(sf::RenderWindow &wnd)
     : wnd(wnd)
 {
-    constexpr int nOptions = 6;
     vanilla_rav.loadFromFile("./resources/VanillaRavioli_Demo.ttf"); // load the font
+    constexpr int nOptions = 6;
 
     for(int i = 0; i < nOptions; i++)
     {

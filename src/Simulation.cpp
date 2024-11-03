@@ -57,6 +57,7 @@ Simulation::Simulation(sf::RenderWindow &window)
 
     systems = std::vector<Pendulum>(0);
     colors = std::vector<SystemColors>(0);
+    indicators = std::vector<Indicator>(0);
 }
 
 sf::Color Simulation::randomColor()
@@ -101,6 +102,7 @@ void Simulation::run()
 void Simulation::addSystem(Physics::SolutionMethod method, sf::Vector2f pos, sf::Color randColor)
 {
     systems.push_back(Pendulum(world, L, m, pos, method, randColor));
+    indicators.push_back(Indicator(wnd, world.nexaLight, method, randColor, systems.size() - 1));
 }
 
 void Simulation::removeSystem(Physics::SolutionMethod method)
@@ -117,6 +119,7 @@ void Simulation::removeSystem(Physics::SolutionMethod method)
     // create new vector to copy all but system/color to remove into
     std::vector<Pendulum> temp_sys = std::vector<Pendulum>(0);
     std::vector<SystemColors> temp_colors = std::vector<SystemColors>(0);
+    std::vector<Indicator> temp_indicators = std::vector<Indicator>(0);
     for(int i = 0; i < systems.size(); i++)
     {
         if(i == index_remove) continue;
@@ -124,12 +127,15 @@ void Simulation::removeSystem(Physics::SolutionMethod method)
         {
             temp_sys.push_back(systems.at(i));
             temp_colors.push_back(colors.at(i));
+            temp_indicators.push_back(indicators.at(i));
         }
     }
     systems.clear();
     colors.clear();
+    indicators.clear();
     systems = temp_sys;
     colors = temp_colors;
+    indicators = temp_indicators;
 }
 
 void Simulation::events()
@@ -309,14 +315,17 @@ void Simulation::update()
 
 void Simulation::draw()
 {
-    // TODO: draw all the things
     menu.draw(); 
     world.draw(wnd);
-    if(systems.size() != 0)
+    if(systems.size() != 0 && indicators.size() != 0)
     {
         for(auto& system : systems)
         {
             system.draw(wnd, world);
+        }
+        for(auto& indic : indicators)
+        {
+            indic.draw(wnd);
         }
     }
 }

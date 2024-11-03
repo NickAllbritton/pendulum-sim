@@ -3,6 +3,7 @@
 #include "World.h"
 #include "Pendulum.h"
 #include "FrameTimer.h"
+#include "Indicator.h"
 
 #ifndef SIMULATION_H
 #define SIMULATION_H
@@ -41,10 +42,9 @@ private:
     sf::RenderWindow& wnd; // the simulation object owns a reference to the window handle
     Menu menu;
     World world; // contains all the objects for the physics and logic
-    sf::Text clicked;
-    sf::Font font;
     std::vector<Pendulum> systems;  // a dynamic array of pendulum systems that will each have different solving methods
     std::vector<SystemColors> colors;
+    std::vector<Indicator> indicators;
 
     // system variables
     float L; // length of the rod

@@ -50,11 +50,12 @@ private:
     sf::RectangleShape y_axis;
     std::vector<sf::Text> tick_xlabels; // tick labels for the x-axis
     std::vector<sf::Text> tick_ylabels; // tick labels for the y-axis
-    sf::Font nexaLight; // font for tick marks and other data displayed
     float width;
     float height;
     const float L; // the length of the pendulum in world space
     const float m; // mass of the bob
+public:
+    sf::Font nexaLight; // font for tick marks and other data displayed
 };
 
 #endif
