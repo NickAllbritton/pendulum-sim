@@ -142,6 +142,7 @@ void Simulation::removeSystem(Physics::SolutionMethod method)
     systems = temp_sys;
     colors = temp_colors;
     indicators = temp_indicators;
+    graph.deletePoints(method);
 }
 
 void Simulation::events()
@@ -269,6 +270,10 @@ void Simulation::events()
                             }
                             initialAngle = 0.f;
                             initial = true;
+                            for(auto& sys : systems)
+                            {
+                                graph.deletePoints(sys.method);
+                            }
                         }
                     }
                 }
@@ -297,7 +302,9 @@ void Simulation::update()
         {
             if(sys.method == Physics::SolutionMethod::SmallAngle)
             {
-                sys.setBobPos(Physics::smallAngle(t, sys.getBobPos().x, initialAngle));
+                auto theta_sys = Physics::smallAngle(t, sys.getBobPos().x, initialAngle);
+                sys.setBobPos(theta_sys.first);
+                sys.setBobVel(theta_sys.second);
             }
             else if(sys.method == Physics::SolutionMethod::Euler)
             {
@@ -314,6 +321,16 @@ void Simulation::update()
             {
                 // approximate the system using Runge-Kutta method
             }
+        }
+        for(int i = 0; i < systems.size(); i++)
+        {
+            // calculate energies and plot them against time
+            // U = mgL - mgLcos(theta) = mgL(1-cos(theta))
+            float U = Physics::g * L * (1 - std::cos(systems.at(i).getBobPos().y));
+            // T = 1/2 mv^2 = 1/2m (r*theta_dot)^2
+            float T = (L*L*systems.at(i).getBobVel().y*systems.at(i).getBobVel().y)/2.f;
+            float E = U + T; // total energy
+            graph.plot(t, E, L, systems.at(i).method, returnSystemColor(colors.at(i)));
         }
         t += dt;
     }

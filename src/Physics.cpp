@@ -3,9 +3,10 @@
 namespace Physics
 {
 
-    sf::Vector2f smallAngle(float time, float L, float theta_i)
+    std::pair<sf::Vector2f, sf::Vector2f> smallAngle(float time, float L, float theta_i)
     {
-        return sf::Vector2f{L, theta_i*std::cos(std::sqrt(g/L) * time)};
+        return {sf::Vector2f{L, theta_i*std::cos(std::sqrt(g/L) * time)}, 
+                sf::Vector2f{0.f, -theta_i*std::sqrt(g/L)*std::sin(std::sqrt(g/L) * time)}};
     }
 
     // second-order euler method

@@ -3,6 +3,7 @@
 Graph::Graph(sf::RenderWindow &wnd, sf::Vector2f pos, sf::Vector2f size)
 {
     origin = {0.f, 0.f};
+    points = std::vector<std::pair<sf::CircleShape, Physics::SolutionMethod>>(0);
 
     nexa_light.loadFromFile("./resources/Nexa-ExtraLight.ttf");
 
@@ -64,15 +65,40 @@ void Graph::draw(sf::RenderWindow &wnd)
             + sf::Vector2f{-13.f, background.getGlobalBounds().getSize().y / 2.f - axisLabels.second.getLocalBounds().getSize().y / 2.f});
     wnd.draw(axisLabels.second);
 
-    sf::CircleShape point;
-    point.setFillColor(sf::Color::White);
-    point.setRadius(1.f);
-    point.setPosition(ScreenCoordinates({20.f, 20.f}));
-    wnd.draw(point);
+    for(auto& point : points)
+    {
+        wnd.draw(point.first);
+    }
 }
 
-void Graph::plot()
+void Graph::plot(float t, float E, float L, Physics::SolutionMethod meth, sf::Color c)
 {
+    // the entire t-axis is 3 min or 180 seconds
+    float t_coord = t * background.getGlobalBounds().getSize().x / 180.f;
+    // the entire E-axis is 2.6mgL (with m = 1)
+    float E_coord = E * background.getGlobalBounds().getSize().y / (2.2f * Physics::g * L);
+
+    sf::CircleShape pt;
+    pt.setFillColor(c);
+    pt.setRadius(1.f);
+    pt.setPosition(ScreenCoordinates({t_coord, E_coord}));
+
+    // add the point to the points
+    points.push_back({pt, meth});
+}
+
+void Graph::deletePoints(Physics::SolutionMethod method)
+{
+    if(points.size() != 0)
+    {
+        std::vector<std::pair<sf::CircleShape, Physics::SolutionMethod>> tmp_points;
+        for(int i = 0; i < points.size(); i++)
+        {
+            if(points.at(i).second == method) continue; // do not add the points corresponding to the target
+            else tmp_points.push_back(points.at(i)); // add all others
+        }
+        points = tmp_points; // replace the points with only the points that were not removed
+    }
 }
 
 sf::Vector2f Graph::ScreenCoordinates(sf::Vector2f graphPos)
@@ -80,5 +106,5 @@ sf::Vector2f Graph::ScreenCoordinates(sf::Vector2f graphPos)
     // flip the y coordinate so that the top left is the origin with 
     // regular cartesian coordinates y-axis pointing up and then
     // add the origin of the graph in screen coordinates to translate
-    return sf::Vector2f{graphPos.x, -graphPos.y} + origin;
+    return origin - sf::Vector2f{graphPos.x, graphPos.y};
 }
