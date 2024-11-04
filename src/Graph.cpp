@@ -2,8 +2,11 @@
 
 Graph::Graph(sf::RenderWindow &wnd, sf::Vector2f pos, sf::Vector2f size)
 {
+    // garbage initializations
     origin = {0.f, 0.f};
     points = std::vector<std::pair<sf::CircleShape, Physics::SolutionMethod>>(0);
+    E_scale = 0.f;
+    t_scale = 0.f;
 
     nexa_light.loadFromFile("./resources/Nexa-ExtraLight.ttf");
 
@@ -71,20 +74,23 @@ void Graph::draw(sf::RenderWindow &wnd)
     }
 }
 
-void Graph::plot(float t, float E, float L, Physics::SolutionMethod meth, sf::Color c)
+void Graph::plot(float t, float E, Physics::SolutionMethod meth, sf::Color c)
 {
     // the entire t-axis is 3 min or 180 seconds
-    float t_coord = t * background.getGlobalBounds().getSize().x / 180.f;
+    float t_coord = t * background.getGlobalBounds().getSize().x / t_scale;
     // the entire E-axis is 2.6mgL (with m = 1)
-    float E_coord = E * background.getGlobalBounds().getSize().y / (2.2f * Physics::g * L);
+    float E_coord = E * background.getGlobalBounds().getSize().y / E_scale;
 
-    sf::CircleShape pt;
-    pt.setFillColor(c);
-    pt.setRadius(1.f);
-    pt.setPosition(ScreenCoordinates({t_coord, E_coord}));
-
-    // add the point to the points
-    points.push_back({pt, meth});
+    if(withinGraph({t, E}))
+    {
+        sf::CircleShape pt;
+        pt.setFillColor(c);
+        pt.setRadius(1.f);
+        pt.setPosition(ScreenCoordinates({t_coord, E_coord}));
+    
+        // add the point to the points in they're in the screen
+        points.push_back({pt, meth});
+    }
 }
 
 void Graph::deletePoints(Physics::SolutionMethod method)
@@ -107,4 +113,9 @@ sf::Vector2f Graph::ScreenCoordinates(sf::Vector2f graphPos)
     // regular cartesian coordinates y-axis pointing up and then
     // add the origin of the graph in screen coordinates to translate
     return origin - sf::Vector2f{graphPos.x, graphPos.y};
+}
+
+bool Graph::withinGraph(sf::Vector2f pos)
+{
+    return pos.x <= t_scale && pos.y <= E_scale;
 }

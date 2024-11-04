@@ -330,7 +330,7 @@ void Simulation::update()
             // T = 1/2 mv^2 = 1/2m (r*theta_dot)^2
             float T = (L*L*systems.at(i).getBobVel().y*systems.at(i).getBobVel().y)/2.f;
             float E = U + T; // total energy
-            graph.plot(t, E, L, systems.at(i).method, returnSystemColor(colors.at(i)));
+            graph.plot(t, E, systems.at(i).method, returnSystemColor(colors.at(i)));
         }
         t += dt;
     }
@@ -352,7 +352,8 @@ void Simulation::draw()
         }
     }
     
-    graph.setSize({wnd.getSize().x - wnd.getSize().y*0.20f - menu.getTitleSize().x, menu.getTitleSize().y});
-    graph.setPos({(float)wnd.getSize().x - graph.getSize().x - wnd.getSize().y * 0.05f, wnd.getSize().y * 0.05f});
+    graph.setScale(180.f, 3.f * Physics::g * L);
+    graph.setSize({wnd.getSize().x - wnd.getSize().y*0.20f - menu.getTitleSize().x, menu.getTitleSize().y + 0.03f * wnd.getSize().y});
+    graph.setPos({(float)wnd.getSize().x - graph.getSize().x - wnd.getSize().y * 0.05f, wnd.getSize().y * 0.02f});
     graph.draw(wnd);
 }
