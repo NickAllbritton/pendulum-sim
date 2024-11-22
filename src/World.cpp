@@ -47,7 +47,7 @@ World::World(sf::RenderWindow& wnd, float L, float mass)
 
     // position of axes
     // start right after the border at the height of the bob at minimum
-    x_axis.setPosition(background.getGlobalBounds().getPosition() + sf::Vector2f{2.f , 1.4f*L}); 
+    x_axis.setPosition(background.getGlobalBounds().getPosition() + sf::Vector2f{2.f , height - 0.2f*L}); 
     // start right after the border centered
     y_axis.setPosition(background.getGlobalBounds().getPosition() + sf::Vector2f{width / 2.f , 2.f}); 
 
@@ -93,7 +93,7 @@ World::World(sf::RenderWindow& wnd, float L, float mass)
     // different screen size than mine, this is not guaranteed to not be buggy
     int nTicksY = static_cast<int>(4 * height / L); // 4 ticks per length L
     y_ticks = std::vector<sf::RectangleShape>(nTicksY); 
-    const int nTicksBelowXAxis = static_cast<int>(4.f * (height - 1.4f*L) / L); // the number of ticks that fit below the x-axis
+    const int nTicksBelowXAxis = static_cast<int>(4.f * 0.2f); // the number of ticks that fit below the x-axis
     // set the positions from bottom to top in world corrdinates
     pos = { 0.f, nTicksBelowXAxis * -L / 4.f };
     for(int i = 0; i < nTicksY; i++) // 
@@ -160,7 +160,7 @@ World::World(sf::RenderWindow& wnd, float L, float mass)
         // this ensures that you do not draw a tick label on the origin
         if(pos.y >= -1.f && pos.y < L) 
         {
-            pos += { 0.f,-L }; // increment the pos as usual
+            pos += { 0.f, L }; // increment the pos as usual
             i--; // decrease the index counter
             continue; // move on
         }
@@ -175,7 +175,7 @@ World::World(sf::RenderWindow& wnd, float L, float mass)
         tick_ylabels.at(i).setString(numString);
         // center the label with the tick
         tick_ylabels.at(i).setPosition(screenPos(pos) - sf::Vector2f{ 0.f , tick_ylabels.at(i).getLocalBounds().getSize().y / 2.f});
-        pos += { 0.f, -L }; // shift the position to the next value
+        pos += { 0.f, L }; // shift the position to the next value
     }
 
     /******************************************************************************************/
@@ -207,4 +207,15 @@ void World::draw(sf::RenderWindow& wnd)
     {
         wnd.draw(label);
     }
+}
+
+bool World::withinWorld(sf::Vector2f globalPos) const
+{
+    // check that position given is within the x values of the background box
+    bool withinWorld = globalPos.x >= background.getGlobalBounds().getPosition().x &&
+                    globalPos.x <= background.getGlobalBounds().getPosition().x + width;
+    // check that position given is within the y values of the background box
+    withinWorld = withinWorld && globalPos.y >= background.getGlobalBounds().getPosition().y &&
+                    globalPos.y <= background.getGlobalBounds().getPosition().y + height;
+    return withinWorld;
 }

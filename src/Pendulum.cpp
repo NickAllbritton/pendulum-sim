@@ -60,3 +60,14 @@ void Pendulum::draw(sf::RenderWindow &wnd, World& world)
     wnd.draw(rod);
     bob.draw(wnd, world);
 }
+
+bool Pendulum::onBob(sf::Vector2f mousePos)
+{
+    // assume mousePos is in world coordinates
+    // bob position is from center of bob
+    bool onBobVar = mousePos.x >= rectPos(bob.getPos()).x - bob.getRadius() / 2.f && 
+            mousePos.x <= rectPos(bob.getPos()).x + bob.getRadius() / 2.f &&
+            mousePos.y >= rectPos(bob.getPos()).y - bob.getRadius() / 2.f && 
+            mousePos.y <= rectPos(bob.getPos()).y + bob.getRadius() / 2.f;
+    return onBobVar;
+}
