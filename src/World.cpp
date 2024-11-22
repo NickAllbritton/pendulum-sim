@@ -177,10 +177,6 @@ World::World(sf::RenderWindow& wnd, float L, float mass)
         tick_ylabels.at(i).setPosition(screenPos(pos) - sf::Vector2f{ 0.f , tick_ylabels.at(i).getLocalBounds().getSize().y / 2.f});
         pos += { 0.f, L }; // shift the position to the next value
     }
-
-    /******************************************************************************************/
-    /*                               Create the physical system                               */
-    /******************************************************************************************/
 }
 
 void World::draw(sf::RenderWindow& wnd)
