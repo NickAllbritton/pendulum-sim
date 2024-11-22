@@ -122,7 +122,10 @@ void Simulation::update()
             }
             else if(sys.method == Physics::SolutionMethod::EulerCromer)
             {
-                // approximate the system using Euler-Cromer method
+                // return a std::pair of the values of the position and velocity
+                auto theta_sys = Physics::eulerCromer(dt, sys.getBobPos(), sys.getBobVel());
+                sys.setBobPos(theta_sys.first);
+                sys.setBobVel(theta_sys.second);
             }
             else if(sys.method == Physics::SolutionMethod::RungeKutta)
             {
