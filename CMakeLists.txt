@@ -10,7 +10,7 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 add_executable(pendulum src/main.cpp src/Simulation.cpp src/Menu.cpp src/World.cpp src/Button.cpp src/Pendulum.cpp src/Physics.cpp src/FrameTimer.cpp src/Indicator.cpp src/Graph.cpp)
-target_link_libraries(pendulum PRIVATE sfml-graphics)
+target_link_libraries(pendulum PRIVATE sfml-graphics sfml-window sfml-system)
 target_compile_features(pendulum PRIVATE cxx_std_17)
 
 if(WIN32)
