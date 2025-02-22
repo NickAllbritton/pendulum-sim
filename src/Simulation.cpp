@@ -188,7 +188,7 @@ void Simulation::events()
                 else
                 {
                     // determine what button the mouse is hovering over when button released
-                    MenuOptions action = menu.clickNULLMethod(sf::Vector2f((float)event.mouseButton.x, (float)event.mouseButton.y));
+                    MenuOptions action = menu.clickNULLMethod(sf::Vector2f{(float)event.mouseButton.x, (float)event.mouseButton.y});
                     // if the initial click was over button that needs to be unclicked then simulate a click
                     if(action == MenuOptions::Reset) menu.simulateClick(action); // click reset back
                     else // click buttons for solution methods back (if attempt to create in noninitial state)
@@ -217,7 +217,7 @@ void Simulation::events()
                 break;
             case sf::Event::MouseButtonPressed:
                 Physics::SolutionMethod method = 
-                    menu.clickAction(sf::Vector2f((float)event.mouseButton.x, (float)event.mouseButton.y)); // check if the mouse click hit a button
+                    menu.clickAction(sf::Vector2f{(float)event.mouseButton.x, (float)event.mouseButton.y}); // check if the mouse click hit a button
                 if(method != Physics::SolutionMethod::NULLMethod)
                 {
                     bool systemCreated = false; // is the system already created
@@ -248,7 +248,7 @@ void Simulation::events()
                     }
                     else // if it is not then evaluate whether a menu button was clicked
                     {
-                        MenuOptions action = menu.clickNULLMethod(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
+                        MenuOptions action = menu.clickNULLMethod(sf::Vector2f{(float)event.mouseButton.x, (float)event.mouseButton.y});
                         if(action == MenuOptions::PlayPause)
                         {
                             // toggle play

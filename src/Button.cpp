@@ -1,7 +1,7 @@
 #include "Button.h"
 #include <iostream>
 
-Button::Button(sf::RenderWindow &wnd, sf::Font& font, sf::Color c, sf::Vector2f pos, std::string str, float w, float h)
+Button::Button(sf::RenderWindow &wnd, sf::Font& font, sf::Color c, sf::Vector2f pos, std::string str)
 {
     text.setCharacterSize(wnd.getSize().y * .05); // 5% of the screen height
     text.setFillColor(c);
@@ -9,17 +9,12 @@ Button::Button(sf::RenderWindow &wnd, sf::Font& font, sf::Color c, sf::Vector2f 
     text.setPosition(pos);
     text.setString(str);
 
-    // if the width and height are 0, that means automatically calculate the width and height
-    width = (w > 0.f) ? w : text.getLocalBounds().width;
-    height = (h > 0.f) ? h : text.getLocalBounds().height;
+    // calculate the width and height
+    width = text.getLocalBounds().width;
+    height = text.getLocalBounds().height;
     this->pos = pos;
     this->c = c;
     state = false;
-}
-
-Button::Button(sf::RenderWindow &wnd, sf::Font& font, sf::Color c, sf::Vector2f pos, std::string str, const sf::Vector2f &size)
-    : Button(wnd, font, c, pos, str, size.x, size.y) // call the first constructor
-{
 }
 
 void Button::draw(sf::RenderWindow &wnd)

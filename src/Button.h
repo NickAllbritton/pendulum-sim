@@ -8,10 +8,7 @@
 class Button
 {
 public:
-    Button(sf::RenderWindow & wnd, sf::Font & font, sf::Color c, sf::Vector2f pos, std::string str, float w, float h);
-    // overload that automatically calculates the width and height based on the text
-    Button(sf::RenderWindow& wnd, sf::Font& font, sf::Color c, sf::Vector2f pos, 
-                std::string str, const sf::Vector2f& size = sf::Vector2f(0.f, 0.f));
+    Button(sf::RenderWindow & wnd, sf::Font & font, sf::Color c, sf::Vector2f pos, std::string str);
     Button() = default;
     ~Button() = default;
     void draw(sf::RenderWindow& wnd);
