@@ -1,5 +1,5 @@
 #include "Menu.h"
-#include <iostream>
+#include <iostream> // for debugging
 
 std::string MenuButtonText(MenuOptions button)
 {
@@ -103,4 +103,6 @@ MenuOptions Menu::clickNULLMethod(sf::Vector2f mPos)
       return MenuOptionFromText(b.getText());
     }
   }
+  // Added this line at the bottom because this is contributing to the "illegal operation"
+  return MenuOptions::Null; // This line ensures that when (not if) my logic fails for mouse click buttons it does not break the program.
 }

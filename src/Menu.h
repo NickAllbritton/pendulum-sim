@@ -12,7 +12,8 @@ enum class MenuOptions
     Euler,
     EulerCromer,
     RungeKutta,
-    Reset
+    Reset,
+    Null
 };
 
 class Menu

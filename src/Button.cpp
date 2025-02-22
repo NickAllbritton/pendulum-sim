@@ -51,6 +51,10 @@ bool Button::mouseClickWithinBounds(sf::Vector2f mPos)
     // pointer. Therefore, I will offset mPos to make more sense
 
     mPos = mPos - sf::Vector2f(4.f, 7.f);
+
+    // For some reason the calculation of the button content relative to the pos and height is consistently wrong
+    // I'm not sure of the origin of this bug, but a good fix is to ensure the button click can register even slightly
+    // outside of the text which may make the experience more usable anyway.
     return (mPos.x < pos.x + width) && (mPos.x > pos.x)
-            && (mPos.y < pos.y + height) && (mPos.y > pos.y);
+            && (mPos.y < pos.y + 1.25*height) && (mPos.y > pos.y);
 }
