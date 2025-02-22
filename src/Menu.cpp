@@ -10,11 +10,11 @@ std::string MenuButtonText(MenuOptions button)
     case MenuOptions::SmallAngle:
       return "Small angle";
     case MenuOptions::Euler:
-      return "Euler method";
+      return "Euler";
     case MenuOptions::EulerCromer:
-      return "Euler-Cromer method";
+      return "Euler-Cromer";
     case MenuOptions::RungeKutta:
-      return "Runge-Kutta method";
+      return "Runge-Kutta";
     case MenuOptions::Reset:
       return "Reset";
     default:
@@ -26,9 +26,9 @@ MenuOptions MenuOptionFromText(std::string text)
 {
   if(text == "Play") return MenuOptions::PlayPause;
   else if(text == "Small angle") return MenuOptions::SmallAngle;
-  else if(text ==  "Euler method") return MenuOptions::Euler;
-  else if(text == "Euler-Cromer method") return MenuOptions::EulerCromer;
-  else if(text ==  "Runge-Kutta method") return MenuOptions::RungeKutta;
+  else if(text ==  "Euler") return MenuOptions::Euler;
+  else if(text == "Euler-Cromer") return MenuOptions::EulerCromer;
+  else if(text ==  "Runge-Kutta") return MenuOptions::RungeKutta;
   else if(text ==  "Reset") return MenuOptions::Reset;
 }
 
