@@ -1,4 +1,5 @@
 # Pendulum Simulation Project
+(no longer being maintained - [port to rust in progress](https://github.com/NickAllbritton/rusty-pendulum))
 
 This project uses C++ and the Simple and Fast Media Library SFML for graphics. To minimize the barriers to entry for those of you that would like to join the project, this project is based on the SFML GitHub template: https://github.com/SFML/cmake-sfml-project
 
